@@ -1,0 +1,41 @@
+
+.banner {
+  margin-top: 70px;  
+}
+
+.banner img {
+  height: 400px;
+  width: 100%;
+  display: block;
+}
+.pet-card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        background: #fff;
+    }
+    .pet-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .pet-img-container {
+        height: 200px;
+        overflow: hidden;
+        border-radius: 15px 0 0 15px;
+    }
+    @media (max-width: 768px) {
+        .pet-img-container {
+            border-radius: 15px 15px 0 0;
+        }
+    }
+    .pet-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .btn-custom {
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }

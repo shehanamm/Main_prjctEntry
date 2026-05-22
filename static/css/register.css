@@ -1,0 +1,91 @@
+/* register.css */
+
+/* IMPORTANT FIX */
+.form-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f2f5;
+}
+
+/* Make sure everything behaves correctly */
+* {
+    box-sizing: border-box;
+}
+
+/* Card styling */
+.card {
+    width: 100%;
+    max-width: 420px;
+    padding: 25px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    background: #fff;
+}
+
+/* Heading */
+.card h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Inputs FIXED (this solves overflow issue) */
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #fff;
+    display: block;
+}
+
+/* Focus effect */
+input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+/* Button centered */
+.btn-primary {
+    width: 100%;
+    background-color: #007bff;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+/* Button hover */
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Link */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 576px) {
+    .card {
+        margin: 15px;
+        padding: 20px;
+    }
+}

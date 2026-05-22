@@ -1,0 +1,67 @@
+body{
+    background:#f4f7fb;
+}
+
+.custom-card{
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.custom-header{
+    background:linear-gradient(to right,#4e73df,#224abe);
+    color:white;
+    padding:20px;
+}
+
+.form-control,
+.form-select,
+textarea{
+    border-radius:10px !important;
+    padding:12px;
+    border:1px solid #dcdcdc;
+}
+
+.form-control:focus,
+.form-select:focus{
+    box-shadow:none;
+    border-color:#4e73df;
+}
+
+.vaccine-box{
+    background:#eef3ff;
+    padding:12px;
+    border-radius:10px;
+}
+
+.pet-card{
+    border-radius:18px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.pet-card:hover{
+    transform:translateY(-5px);
+}
+
+.pet-image{
+    height:250px;
+    object-fit:cover;
+}
+
+.pet-title{
+    color:#224abe;
+    font-weight:700;
+}
+
+.description{
+    color:#666;
+}
+
+.add-btn{
+    border-radius:10px;
+    padding:10px 20px;
+}
+
+.btn{
+    border-radius:10px;
+}

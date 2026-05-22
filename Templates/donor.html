@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/donordash.css' %}">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="bi bi-paw-fill"></i> Donor Hub</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a></li>
+                <li><a href="{% url 'petoperation:addpet' %}"><i class="bi bi-plus-circle-fill"></i> Add New Pet</a></li>
+                <li><a href="{% url 'petoperation:view_pet' %}"><i class="bi bi-journal-text"></i> My History</a></li>
+                <li><a href="{% url 'update_donor_profile' %}"><i class="bi bi-person-fill-gear"></i> Profile</a></li>
+                <li>
+          <form action="{% url 'logout' %}" method="post" class="m-0 p-0">
+            {% csrf_token %}
+            <button type="submit" class="list-group-item list-group-item-action bg-transparent text-white border-0 text-start w-100 shadow-none py-2 px-3">
+              <i class="bi bi-person-fill-gear"></i>Logout
+            </button>
+          </form>
+        </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <div class="header-section mb-4">
+            <h1>Donor Dashboard</h1>
+            <p class="text-muted">Manage your pet listings and monitor incoming messages.</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Side: Pet Listings (Keeps original photo display) -->
+            <div class="col-lg-8">
+                {% for pet in pet_donate %}
+                <section class="pet-display-card shadow-sm border mb-3">
+                    <div class="info-row">
+                        <div class="label-column">Pet Photo</div>
+                        <div class="data-column">
+                            {% if pet.pet_img %}
+                                <img src="{{ pet.pet_img.url }}" alt="{{ pet.pet_name }}" class="pet-image">
+                            {% else %}
+                                <div class="pet-image-placeholder"><i class="bi bi-camera"></i></div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="label-column">Pet Name</div>
+                        <div class="data-column">
+                            <h4 class="mb-0 text-dark fw-bold">{{ pet.pet_name }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="label-column">Status</div>
+                        <div class="data-column">
+                            <span class="status-tag status-{{ pet.status|lower }}">{{ pet.status }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row border-0">
+                        <div class="label-column">Actions</div>
+                        <div class="data-column">
+                            <a href="{% url 'petoperation:update_petdetails' pet.id %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                <i class="bi bi-pencil-square me-1"></i> Edit Details
+                            </a>
+                        </div>
+                    </div>
+                </section>
+                {% endfor %}
+            </div>
+
+            <!-- Right Side: Compact Message Area (NO IMAGES) -->
+            <div class="col-lg-4">
+                <div class="msg-card shadow-sm">
+                    <div class="msg-card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0 fw-bold"><i class="bi bi-chat-dots-fill me-2 text-primary"></i> Inquiries</h6>
+                        <span class="badge bg-primary rounded-pill">{{ donor_chat.count }}</span>
+                    </div>
+                    <div class="msg-card-body">
+                        {% for chat in donor_chat %}
+                        <a href="{% url 'petoperation:chat_msg' chat.id %}" class="chat-list-item">
+                            <div class="d-flex align-items-start">
+                                <!-- Styled Icon instead of Image -->
+                                <div class="chat-icon-box">
+                                    <i class="bi bi-person-badge"></i>
+                                </div>
+                                <div class="ms-3 overflow-hidden">
+                                    <div class="chat-pet-title text-truncate">{{ chat.pet.pet_name }}</div>
+                                    <div class="chat-user-subtitle text-truncate">
+                                        <i class="bi bi-person me-1"></i> {{ chat.user.username }}
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        {% empty %}
+                        <div class="empty-msg-state">
+                            <i class="bi bi-chat-square-dots mb-2"></i>
+                            <p>No messages yet</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

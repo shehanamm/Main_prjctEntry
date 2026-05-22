@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Pet Details</h1>
+  <div>
+    <h4>Pet Name: {{ pet_selected.pet_name }}</h4>
+    <img src="{{ pet_selected.pet_img.url }}" alt="{{ pet_selected.pet_name }}" style="max-width:300px;">
+    <p><strong>Age:</strong> {{ pet_selected.pet_age }} years</p>
+    <p><strong>Breed:</strong> {{ pet_selected.pet_breed.breed_name }}</p>
+    <p><strong>Category:</strong> {{ pet_selected.pet_cat.name }}</p>
+    <p><strong>Location:</strong> {{ pet_selected.pet_location }}</p>
+    <p><strong>Vaccinated:</strong> {{ pet_selected.pet_vaccinated|yesno:"Yes,No" }}</p>
+    <p><strong>Description:</strong> {{ pet_selected.pet_desc }}</p>
+    <p><strong>Reason for Adoption:</strong> {{ pet_selected.pet_reason }}</p>
+    <p><strong>Posted On:</strong> {{ pet_selected.posted_date|date:"F d, Y" }}</p>
+    <p><strong>Status:</strong> {{ pet_selected.status|capfirst }}</p>
+  </div>
+{% endblock %}

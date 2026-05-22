@@ -1,0 +1,107 @@
+<!-- <form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <h3>Profile</h3>
+    
+    {{form.as_p}}
+    <button type="submit" class="btn-btn-primary">Update</button>
+  
+</form> -->
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Staff Profile</title>
+    <link rel="stylesheet" href="{% static 'css/staffprof.css' %}">
+</head>
+<body>
+
+    <div class="profile-container">
+        <div class="profile-card">
+            <h2>Edit Staff Profile</h2>
+            
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="error-banner">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Profile Picture Section (Full Width Hero Placement) -->
+                {% if form.profile_pic %}
+                    <div class="form-group full-width avatar-group">
+                        <label for="{{ form.profile_pic.id_for_label }}">Profile Picture</label>
+                        {{ form.profile_pic }}
+                        {% if form.profile_pic.errors %}
+                            <span class="field-error">{{ form.profile_pic.errors.0 }}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                <!-- Profile Information Grid -->
+                <div class="profile-grid">
+                    
+                    <!-- Row 1: Name & Designation -->
+                    <div class="form-group">
+                        <label for="{{ form.staff_name.id_for_label }}">Full Name</label>
+                        {{ form.staff_name }}
+                        {% if form.staff_name.errors %}<span class="field-error">{{ form.staff_name.errors.0 }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.staff_desg.id_for_label }}">Designation</label>
+                        {{ form.staff_desg }}
+                        {% if form.staff_desg.errors %}<span class="field-error">{{ form.staff_desg.errors.0 }}</span>{% endif %}
+                    </div>
+
+                    <!-- Row 2: Date of Birth & Location -->
+                    <div class="form-group">
+                        <label for="{{ form.staff_dob.id_for_label }}">Date of Birth</label>
+                        {{ form.staff_dob }}
+                        {% if form.staff_dob.errors %}<span class="field-error">{{ form.staff_dob.errors.0 }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.staff_Location.id_for_label }}">Work Location</label>
+                        {{ form.staff_Location }}
+                        {% if form.staff_Location.errors %}<span class="field-error">{{ form.staff_Location.errors.0 }}</span>{% endif %}
+                    </div>
+
+                    <!-- Row 3: Contact & Email -->
+                    <div class="form-group">
+                        <label for="{{ form.staff_contact.id_for_label }}">Contact Number</label>
+                        {{ form.staff_contact }}
+                        {% if form.staff_contact.errors %}<span class="field-error">{{ form.staff_contact.errors.0 }}</span>{% endif %}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="{{ form.staff_mail.id_for_label }}">Email Address</label>
+                        {{ form.staff_mail }}
+                        {% if form.staff_mail.errors %}<span class="field-error">{{ form.staff_mail.errors.0 }}</span>{% endif %}
+                    </div>
+
+                    <!-- Row 4: Address (Spans Full Width across Grid) -->
+                    <div class="form-group full-width">
+                        <label for="{{ form.staff_address.id_for_label }}">Street Address *</label>
+                        {{ form.staff_address }}
+                        {% if form.staff_address.errors %}<span class="field-error">{{ form.staff_address.errors.0 }}</span>{% endif %}
+                    </div>
+
+                </div>
+
+                <!-- Form Submissions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-save">Save Profile</button>
+                    <a href="{%url 'staffdashboard'%}" class="btn btn-cancel">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

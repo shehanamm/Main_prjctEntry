@@ -1,0 +1,76 @@
+{% extends 'base.html'%}
+{% load static %}
+
+    <title>{{ pro.name }} - Details</title>
+    <!-- Separate Product Detail Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/proonedetails.css' %}">
+{%block content%}
+
+<div class="product-detail-container">
+    <div class="product-wrapper">
+        
+        <!-- Left Image Card Layout -->
+        <div class="product-image-section">
+            {% if pro.img %}
+                <img src="{{ pro.img.url }}" alt="{{ pro.name }}">
+            {% else %}
+                <p>No Image Available</p>
+            {% endif %}
+        </div>
+        
+        <!-- Right Details Configuration Panel -->
+        <div class="product-info-section">
+            <h3 class="product-title">{{ pro.name }}</h3>
+            
+            {% if pro.cat %}
+                <div class="product-category">Category: {{ pro.cat.name }}</div>
+            {% endif %}
+            
+            <!-- Safe lowercase access to the field evaluated in your models.py -->
+            <div class="product-price">${{ pro.price }}</div>
+            
+            <div class="product-size">Size: {{ pro.size }}</div>
+            
+            <div class="product-description">
+                <strong>Description:</strong>
+                <p>{{ pro.pro_desc|default:"No description provided for this product." }}</p>
+            </div>
+            
+            <!-- Quantity Selection & Actions Form -->
+        
+<form method="POST" action="{% url 'addcart' pro.id %}" class="cart-quantity-form" id="cart-form">
+    {% csrf_token %}
+    
+    <!-- STATE 1: Initial "Add to Cart" Button -->
+    <div id="initial-add-state" class="button-group">
+        <a href="{% url 'home' %}" class="btn btn-home">Back to Home</a>
+        <button type="button" class="btn btn-cart" onclick="showQuantityControls()">Add to Cart</button>
+    </div>
+
+    <!-- STATE 2: Hidden by default, shows when "Add to Cart" is clicked -->
+    <div id="quantity-adjust-state" class="quantity-wrapper standard-gap" style="display: none;">
+        <div class="quantity-control">
+            <!-- Minus Button -->
+            <button type="button" class="qty-btn" onclick="updateQuantity(-1)">-</button>
+            <!-- Quantity Input Field -->
+            <input type="number" name="quantity" id="quantity-field" value="1" min="1" readonly class="input-quantity-field">
+            <!-- Plus Button -->
+            <button type="button" class="qty-btn" onclick="updateQuantity(1)">+</button>
+        </div>
+
+        <div class="button-group">
+            <a href="{% url 'home' %}" class="btn btn-home">Back to Home</a>
+            <button type="submit" class="btn btn-cart-confirm">Confirm & Add</button>
+        </div>
+    </div>
+</form>
+
+    </div>
+</div>
+
+<!-- JavaScript to handle quantity increment/decrement -->
+<script src="{% static 'js/detailpro.js' %}">
+   
+</script>
+
+{%endblock%}

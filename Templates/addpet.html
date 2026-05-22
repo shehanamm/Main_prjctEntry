@@ -1,0 +1,150 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+   
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0">
+
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Add New Pet</h3>
+                </div>
+
+                <div class="card-body p-4">
+
+                    <form method="POST" enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <!-- Pet Name -->
+                        <div class="mb-3">
+                            <label>Pet Name</label>
+                            {{ form.pet_name }}
+                        </div>
+
+                        <!-- Image -->
+                        <div class="mb-3">
+                            <label>Pet Image</label>
+                            {{ form.pet_img }}
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label>Category</label>
+
+                            <select name="pet_cat" id="category" class="form-select">
+
+                                <option value="">Select Category</option>
+
+                                {% for i in form.pet_cat.field.queryset %}
+
+                                <option value="{{ i.id }}">
+                                    {{ i.name }}
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <!-- Breed -->
+                        <div class="mb-3">
+                            <label>Breed</label>
+
+                            <select name="pet_breed" id="breed" class="form-select">
+
+                                <option value="">Select Breed</option>
+
+                                {% for i in breeds %}
+
+                                <option value="{{ i.id }}"
+                                        data-category="{{ i.cat.id }}">
+
+                                    {{ i.breed_name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <!-- Age -->
+                        <div class="mb-3">
+                            <label>Age</label>
+                            {{ form.pet_age }}
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-3">
+                            <label>Location</label>
+                            {{ form.pet_location }}
+                            <!-- Price -->
+                        </div>
+                         <div class="mb-3">
+                            <label>Price</label>
+                            {{ form.price}}
+                        </div>
+
+                        <!-- Vaccinated -->
+                        <div class="mb-3">
+                            {{ form.pet_vaccinated }}
+                            <label>Vaccinated</label>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label>Description</label>
+                            {{ form.pet_desc }}
+                        </div>
+                        
+                        <!-- Reason -->
+                        <div class="mb-3">
+                            <label>Reason</label>
+                            {{ form.pet_reason }}
+                        </div>
+                    <div class="mb-3">
+                        <label for="id_status" class="form-label fw-bold">Current Status</label>
+                            <select name="status" id="id_status" class="form-select">
+    <!-- The 'value' must match your Django choices exactly -->
+                        <option value="available" selected>Available</option>
+                        <option value="adopted">Adopted</option>
+                        </select>
+                          <div class="form-text">Change this to "Adopted" once the pet finds a home.</div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100"> Add Pet</button><br>
+                      
+                     
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- JS -->
+<script src="{% static 'js/add_catbreed.js' %}"></script>
+
+
+{%endblock%}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-info">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}

@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Adoption Admin Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/admindash.css' %}">
+</head>
+<body>
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Pet</th>
+                        <th>Category</th>
+                        <th>Breed</th>
+                        <th>Image</th>
+                        
+                        <th>Status</th>
+                        
+                        <th class="text-end">Management Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pet in all_pets %}
+                    <tr>
+                        <td><strong>{{ pet.pet_name }}</strong></td>
+                        <td>{{ pet.pet_cat.name }} </td>
+                        <td>{{ pet.pet_breed.breed_name }}</td>
+                        <td><img src={{pet.pet_img.url}} width="80px"height="80px"></td>
+                        
+                        <td>
+                            <span class="badge {% if pet.status == 'available' %}bg-success{% else %}bg-secondary{% endif %}">
+                                {{ pet.status }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <div class="btn-group">
+                                <!-- VIEW: Eye Icon -->
+                                <a href="{% url 'petoperation:view_allpet' pet.id %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                
+                                <!-- EDIT: Pencil Square Icon -->
+                                <a href="{% url 'petoperation:updatepetadmin' pet.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                <!-- DELETE: Trash Icon with confirmation -->
+                                <a href="{% url 'petoperation:delete_pet_admin' pet.id %}" 
+                                   class="btn btn-sm btn-outline-danger" 
+                                   onclick="return confirm('Are you sure you want to remove {{ pet.pet_name }}?')">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+          
+        </div>
+    </div>
+</div>
+  <a href="{% url 'admindashboard' %}">Back to Dash</a>
+</body>
+</html>

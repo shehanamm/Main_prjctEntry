@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="banner">
+    <link rel="stylesheet" href="{% static 'css/allpets.css' %}">
+    <img src="{% static 'img/petshop1.png' %}">
+</div>
+    <!-- Linking the separate CSS file -->
+    <link rel="stylesheet" href="{% static 'css/petshop.css' %}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="shop-header">
+        <h1>Welcome to Our Pet Shop!</h1>
+        <p>Find the best supplies, toys, and treats for your furry friends.</p>
+    </header>
+
+    <!-- Product Grid Container -->
+    <main class="shop-container">
+        <div class="product-grid">
+            
+            <!-- Loop through each product item sent from the Django view -->
+            {% for item in allobj %}
+                <div class="product-card">
+                    <div class="product-info">
+                        <h3 class="product-name">{{ item.name }}</h3>
+                        <img class="product-image" src="{{ item.img.url }}">
+                        <p class="product-size">Size: <span>{{ item.size }}</span></p>
+                        <p class="product-price">${{ item.price }}</p>
+                        
+                        <!-- --- STOCK STATUS INDICATOR --- -->
+                        {% if item.stock > 0 %}
+                            <p class="stock-status in-stock" style="color: #28a745; font-size: 0.9rem; margin-top: 5px; font-weight: 600;">
+                                In Stock ({{ item.stock }} available)
+                            </p>
+                        {% else %}
+                            <p class="stock-status out-of-stock" style="color: #dc3545; font-size: 0.9rem; margin-top: 5px; font-weight: bold; text-transform: uppercase;">
+                                Out of Stock
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <!-- --- CONDITIONAL ACTION BUTTON --- -->
+                    {% if item.stock > 0 %}
+                        <!-- Active link if item is available -->
+                        <a href="{% url 'one_product_details' item.id %}" class="buy-btn">Buy Now</a>
+                    {% else %}
+                        <!-- Disabled layout block if out of stock -->
+                        <a href="#" class="buy-btn disabled-btn" style="background-color: #6c757d; cursor: not-allowed; pointer-events: none; text-align: center;">Out of Stock</a>
+                    {% endif %}
+                </div>
+            {% empty %}
+                <div class="no-products">
+                    <p>No products available at the moment. Check back soon!</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </main>
+
+</body>
+</html>
+{% endblock %}

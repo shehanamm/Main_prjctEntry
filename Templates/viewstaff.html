@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ prod.name }} - Details</title>
+    <!-- Separate Product Detail Stylesheet -->
+    <link rel="stylesheet" href="{% static 'css/proonedetails.css' %}">
+</head>
+<body>
+
+<div class="product-detail-container">
+    <div class="product-wrapper">
+        
+        <!-- Left Image Card Layout -->
+        <div class="product-image-section">
+            {% if prod.img %}
+                <img src="{{ prod.img.url }}" alt="{{ pro.name }}">
+            {% else %}
+                <p>No Image Available</p>
+            {% endif %}
+        </div>
+        
+        <!-- Right Details Configuration Panel -->
+        <div class="product-info-section">
+            <h3 class="product-title">{{ prodname }}</h3>
+            
+            {% if pro.cat %}
+                <div class="product-category">Category: {{ prod.cat.name }}</div>
+            {% endif %}
+            
+            <!-- Safe lowercase access to the field evaluated in your models.py -->
+            <div class="product-price">${{ prod.price }}</div>
+            
+            <div class="product-size">Size: {{ prod.size }}</div>
+            
+            <div class="product-description">
+                <strong>Description:</strong>
+                <p>{{ prod.pro_desc|default:"No description provided for this product." }}</p>
+            </div>
+    <div class="button-group">
+            <a href="{% url 'staffdashboard' %}" class="btn btn-home">Back to dash</a>

@@ -1,0 +1,70 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - {{ pet.pet_name }}</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/chatmsg.css'%}">
+</head>
+<body class="bg-light">
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <!-- Chat Card -->
+            <div class="card chat-card shadow">
+                <!-- Header -->
+                <div class="card-header bg-white py-3">
+                    <div class="d-flex align-items-center">
+                        <img src="{{ pet.pet_img.url }}" class="rounded-circle me-3" alt="pet" style="width: 50px; height: 50px; object-fit: cover;">
+                        <div>
+                            <h5 class="mb-0">{{ pet.pet_name }}</h5>
+                            <small class="text-muted">Chatting with {% if request.user == booking.user %}{{ pet.user.username }}{% else %}{{ booking.user.username }}{% endif %}</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Body -->
+                <div class="card-body chat-body" id="chat-window">
+                    {% for message in chat_messages %}
+                        <div class="message-wrapper {% if message.sender == request.user %}sent{% else %}received{% endif %}">
+                            <div class="message-bubble">
+                                <p class="mb-0">{{ message.content }}</p>
+                                <small class="message-time">{{ message.timestamp|date:"H:i" }}</small>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Footer / Input -->
+                <div class="card-footer bg-white border-top-0 py-3">
+                    <form method="POST" class="input-group">
+                        {% csrf_token %}
+                        <input type="text" name="content" class="form-control rounded-pill-start border-light-subtle bg-light" placeholder="Type a message..." required>
+                        <button class="btn btn-primary rounded-pill-end px-4" type="submit">
+                            Send
+                        </button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="text-center mt-3">
+                <a href="{% url 'home' %}" class="text-decoration-none text-muted small">← Back to Dashboard</a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    // Auto-scroll to bottom of chat
+    var chatWindow = document.getElementById("chat-window");
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+</script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Staff Profile</h1>
+    </header>
+    <main>
+        <section class="profile-card">
+            <h2>{{ staff.name}}</h2>
+            <p><strong>Username:</strong> {{ staff.user.username }}</p>
+            <p><strong>Email:</strong> {{ staff.staff_mail }}</p>
+            <p><strong>Designation:</strong> {{ staff.staff_desg }}</p>
+            <p><strong>Address:</strong> {{ staff.staff_address }}</p>
+            <p><strong>DOB:</strong> {{ staff.staff_dob }}</p>
+            <p><strong>Location:</strong> {{ staff.staff_Location }}</p>
+            <p><strong>Contact:</strong> {{ staff.staff_contact }}</p>
+            {% if staff.profile_pic %}
+           <img src="{{ donor.profile_pic.url }}" alt="Donor Picture" class="profile-pic">
+            {% else %}
+                <p>No profile picture available.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

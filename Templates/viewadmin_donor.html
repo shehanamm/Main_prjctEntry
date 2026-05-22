@@ -1,0 +1,31 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donor Profile</title>
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Donor Profile</h1>
+    </header>
+    <main>
+        <section class="profile-card">
+            <h2>{{ donor.name }}</h2>
+            <p><strong>Username:</strong>
+           <p><strong>Email:</strong> {{ donor.user.email }}</p>
+            <p><strong>Address:</strong> {{ donor.address }}</p>
+            <p><strong>City:</strong> {{ donor.city }}</p>
+            <p><strong>Phone:</strong> {{ donor.phone }}</p>
+           {% if donor.profile_pic %}
+            <img src="{{ donor.profile_pic.url }}" alt="Donor Picture" class="profile-pic">
+            {% else %}
+                <p>No profile picture available.</p>
+            {% endif %}
+        </section>
+    </main>
+</body>
+</html>

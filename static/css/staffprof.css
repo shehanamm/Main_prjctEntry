@@ -1,0 +1,187 @@
+/* Styling Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #334155;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.profile-container {
+    width: 100%;
+    max-width: 760px;
+}
+
+.profile-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    padding: 40px;
+    border: 1px solid #e2e8f0;
+}
+
+h2 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 28px;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+}
+
+/* Two Column Grid Setup */
+.profile-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Full Width Override rules */
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+.avatar-group {
+    background-color: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Base Form Input Fields Control styles */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 11px 16px;
+    font-size: 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    color: #1e293b;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+/* File Picker styling fixes */
+.form-group input[type="file"] {
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* Form Error banners & alerts */
+.field-error {
+    color: #dc2626;
+    font-size: 13px;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.error-banner {
+    background-color: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 14px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    color: #991b1b;
+}
+
+/* Submission Row Layout styles */
+.form-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 24px;
+}
+
+.btn {
+    padding: 12px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.15s ease;
+}
+
+.btn-save {
+    background-color: #4f46e5;
+    color: #ffffff;
+    border: none;
+}
+
+.btn-save:hover {
+    background-color: #4338ca;
+}
+
+.btn-cancel {
+    background-color: #ffffff;
+    color: #64748b;
+    border: 1px solid #cbd5e1;
+}
+
+.btn-cancel:hover {
+    background-color: #f8fafc;
+    color: #334155;
+    border-color: #94a3b8;
+}
+
+/* Mobile Media Query Breakpoint */
+@media (max-width: 640px) {
+    body {
+        padding: 12px;
+    }
+
+    .profile-card {
+        padding: 24px;
+    }
+    
+    .profile-grid {
+        grid-template-columns: 1fr; /* Drop grid layout structure down to single column stack */
+        gap: 18px;
+    }
+    
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+    
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 12px;
+    }
+    
+    .btn {
+        width: 100%;
+    }
+}

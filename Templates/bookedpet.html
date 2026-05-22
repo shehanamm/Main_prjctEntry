@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+</head>
+<body>
+    <h1>Booking Details</h1>
+    <div>
+        <h2>Pet: {{ booked.pet.pet_name }}</h2>
+        <img src="{{ booked.pet.pet_img.url }}" alt="{{ booked.pet.pet_name }}" style="max-width:300px;">
+        <p><strong>Age:</strong> {{ booked.pet.pet_age }} years</p>
+        <p><strong>Breed:</strong> {{ booked.pet.pet_breed.breed_name }}</p>
+        <p><strong>Category:</strong> {{ booked.pet.pet_cat.name }}</p>
+        <p><strong>Location:</strong> {{ booked.pet.pet_location }}</p>
+        <p><strong>Vaccinated:</strong> {{ booked.pet.pet_vaccinated|yesno:"Yes,No" }}</p>
+        <p><strong>Description:</strong> {{ booked.pet.pet_desc }}</p>
+        <p><strong>Reason for Adoption:</strong> {{ booked.pet.pet_reason }}</p>
+        <p><strong>Posted On:</strong> {{ booked.pet.posted_date|date:"F d, Y" }}</p>
+        <p><strong>Status:</strong> {{ booked.status|capfirst }}</p>
+    </div>
+
+    <h2>Your Booking Details</h2>
+    <p><strong>Booking Status:</strong> {{ booked.status|capfirst }}</p>
+ 
+   
+    <a href="{% url 'userdashboard' %}">Back to Dashboard</a>
+</body>
+</html>

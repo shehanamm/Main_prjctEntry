@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Products</title>
+    <!-- Link your separated CSS stylesheet below -->
+    <link rel="stylesheet" href="{% static 'css/allpro.css' %}">
+</head>
+<body>
+<h3>ALL PRODUCT DETAILS</h3>
+<div class="table-container">
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Stock</th>
+                <th>View Details</th>
+                <th>Modify</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in allpro %}
+            <tr>
+                <td data-label="Product">
+                    <a href="{% url 'one_product_details' i.id %}" class="product-cell-link">
+                        {% if i.img %}
+                            <img src="{{ i.img.url }}" class="product-img" alt="{{ i.name }}">
+                        {% else %}
+                            <div class="no-img-placeholder">No Image</div>
+                        {% endif %}
+                        <span>{{ i.name }}</span>
+                    </a>
+                </td>
+                <td data-label="Stock">
+                    {{i.stock }}
+                </td>
+                <td data-label="View Details">
+                    <a href="{% url 'staff_view' i.id %}" class="btn-action btn-view">View</a>
+                </td>
+                <td data-label="Modify">
+                    <a href="{% url 'edit_product' i.id %}" class="btn-action btn-edit">Edit</a>
+                </td>
+                <td data-label="Remove">
+                    <a href="{% url 'delete_product' i.id %}" class="btn-action btn-delete">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

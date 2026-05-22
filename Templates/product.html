@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Your Custom Stylesheet Link -->
+    <link href="{% static 'css/product.css' %}" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <!-- Grid bounds: full width on phones, 8/12 layout on large screens -->
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card shadow p-4 p-md-5 bg-white rounded-3">
+                
+                <h3 class="mb-4 text-center fw-bold text-dark">ADD NEW PRODUCT</h3>
+                
+                <form method="post" enctype="multipart/form-data" class="responsive-form">
+                    {% csrf_token %}
+                    
+                    <!-- Form level error validation alerts -->
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %} {{ error }} {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Field: Name -->
+                    <div class="mb-3">
+                        <label for="{{ form.name.id_for_label }}" class="form-label fw-semibold">Product Name</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}<div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>{% endif %}
+                    </div>
+
+                    <!-- Row Layout: Price, Size, Category side-by-side on tablet/desktop -->
+                    <div class="row g-3 mb-3">
+                        <div class="col-12 col-md-4">
+                            <label for="{{ form.price.id_for_label }}" class="form-label fw-semibold">Price</label>
+                            {{ form.price }}
+                            {% if form.price.errors %}<div class="text-danger small mt-1">{{ form.price.errors.0 }}</div>{% endif %}
+                        </div>
+                        
+                        <div class="col-12 col-md-4">
+                            <label for="{{ form.size.id_for_label }}" class="form-label fw-semibold">Size</label>
+                            {{ form.size }}
+                            {% if form.size.errors %}<div class="text-danger small mt-1">{{ form.size.errors.0 }}</div>{% endif %}
+                        </div>
+
+                        <div class="col-12 col-md-4">
+                            <label for="{{ form.cat.id_for_label }}" class="form-label fw-semibold">Category</label>
+                            {{ form.cat }}
+                            {% if form.cat.errors %}<div class="text-danger small mt-1">{{ form.cat.errors.0 }}</div>{% endif %}
+                        </div>
+                         <div class="col-12 col-md-4">
+                            <label for="{{ form.cat.id_for_label }}" class="form-label fw-semibold">Stock</label>
+                            {{ form.stock }}
+                            {% if form.stock.errors %}<div class="text-danger small mt-1">{{ form.stock.errors.0 }}</div>{% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Field: Image upload -->
+                    <div class="mb-3">
+                        <label for="{{ form.img.id_for_label }}" class="form-label fw-semibold">Product Image</label>
+                        {{ form.img }}
+                        {% if form.img.errors %}<div class="text-danger small mt-1">{{ form.img.errors.0 }}</div>{% endif %}
+                    </div>
+
+                    <!-- Field: Description -->
+                    <div class="mb-4">
+                        <label for="{{ form.pro_desc.id_for_label }}" class="form-label fw-semibold">Description</label>
+                        {{ form.pro_desc }}
+                        {% if form.pro_desc.errors %}<div class="text-danger small mt-1">{{ form.pro_desc.errors.0 }}</div>{% endif %}
+                    </div>
+
+                    <!-- Full-Width Responsive Action Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg fw-bold">Save Product</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

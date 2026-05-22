@@ -1,0 +1,159 @@
+/* Container and Table Layout */
+.table-container {
+    width: 100%;
+    margin: 20px auto;
+    overflow-x: auto;
+    padding: 0 10px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.product-table th, 
+.product-table td {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.product-table th {
+    background-color: #2c3e50;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.product-table tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.2s ease;
+}
+
+.product-table tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* Product Content Elements */
+.product-cell-link {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: #333333;
+    font-weight: 500;
+}
+
+.product-cell-link:hover {
+    color: #3498db;
+}
+
+.product-img {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+}
+
+.no-img-placeholder {
+    height: 80px;
+    width: 80px;
+    background-color: #f1f2f6;
+    color: #a4b0be;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px dashed #ccc;
+}
+
+/* Action Buttons styled cleanly */
+.btn-action {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.btn-view { background-color: #e1f5fe; color: #0288d1; }
+.btn-view:hover { background-color: #0288d1; color: #fff; }
+
+.btn-edit { background-color: #efebe9; color: #5d4037; }
+.btn-edit:hover { background-color: #5d4037; color: #fff; }
+
+.btn-delete { background-color: #ffebee; color: #c62828; }
+.btn-delete:hover { background-color: #c62828; color: #fff; }
+
+/* Responsive Media Query for Mobile (Screen widths under 768px) */
+@media screen and (max-width: 768px) {
+    .product-table, 
+    .product-table thead, 
+    .product-table tbody, 
+    .product-table th, 
+    .product-table td, 
+    .product-table tr {
+        display: block;
+    }
+
+    /* Hide table headers on mobile */
+    .product-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    .product-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        background: #fff;
+    }
+
+    .product-table td {
+        border: none;
+        position: relative;
+        padding-left: 45%;
+        text-align: right;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Inject descriptive column text labels dynamically using pseudo-elements */
+    .product-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 40%;
+        text-align: left;
+        font-weight: bold;
+        color: #7f8c8d;
+    }
+
+    /* Structural adjustments for content components on mobile blocks */
+    .product-cell-link {
+        justify-content: flex-end;
+    }
+    
+    .btn-action {
+        width: 50%;
+        box-sizing: border-box;
+    }
+}

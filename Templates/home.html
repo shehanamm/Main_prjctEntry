@@ -1,0 +1,148 @@
+{%extends 'base.html'%}
+{%load static %}
+{%block content%}
+<link
+  rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <section class="hero">
+        <div class="content">
+         <h1>
+         Find Your Perfect <br>
+         <span class="highlight">Companion</span>
+        </h1>
+            <p>Give a loving home to pets in need. Browse our available animals and make a difference today.</p>
+
+            <div class="buttons">
+                 <a href="{% url 'petoperation:allpets_view' %}" class="btn btn-primary">Browse Pets</a>
+               
+            </div>
+        </div>
+    </div>
+ </section>
+ <section class="announcements">
+    <div class="container">
+        {% for announcement in announcements %}
+            <div class="announcement-box">
+                <h4>{{announcement.title }}</h4>
+                <p>{{announcement.message }}</p>
+               
+            </div>
+        {% endfor %}
+    </div>
+</section>
+ <section class="stat">
+    <div class="stat-item">
+        <h3>2,500+</h3>
+        <p>Pets Adopted</p>
+    </div>
+    <div class="stat-item">
+        <h3>150+</h3>
+        <p>Available Pets</p>
+    </div>
+    <div class="stat-item">
+        <h3>98%</h3>
+        <p>Happy Families</p>
+    </div>
+ </section>
+ <!-- petsection -->
+ <section class="pets"> 
+   <div class="card" style="width: 18rem;">
+  <img src="{%static 'img/greycat.jpg'%}" class="card-img-top" alt="grey">
+  <div class="card-body">
+    <p class="card-text">Mittu <br>Grey cat <br>Independent yet affectionate feline friend</p>
+    <a href="{% url 'petoperation:allpets_view' %}"  class="btn btn-secondary">Learn More</a>
+  </div>
+</div>
+ <div class="card" style="width: 18rem;">
+  <img src="{%static 'img/german.jpg'%}" class="card-img-top" alt="grey">
+  <div class="card-body">
+    <p class="card-text">Tomy <br>German shephered <br>baby waiting for your love</p>
+    <a href="{% url 'petoperation:allpets_view' %}"  class="btn btn-secondary">Learn More</a>
+  </div>
+</div>
+ <div class="card" style="width: 18rem;">
+  <img src="{%static 'img/persian.jpg'%}" class="card-img-top" alt="grey">
+  <div class="card-body">
+    <p class="card-text">Charlie <br>Persian cat <br>Lovely White cat </p>
+    <a href="{% url 'petoperation:allpets_view' %}"  class="btn btn-secondary">Learn More</a>
+  </div>
+</div>
+ </section>
+ <!-- how it work section -->
+ <section class="how">
+    <h2 class="text-center">How It Works</h2>
+    <p class="text-center text-muted mb-5">Three simple steps to find your new best friend</p>
+    <div class="row g-4">
+    <div class="col-md-4">
+    <div class="card h-100 text-center">
+    <div class="card-body">
+    <i class="fa-solid fa-magnifying-glass fa-3x mb-3" style="color: orangered;"></i>
+    <h2>Browse Pets</h2>
+    <p>Explore our available pets and find your perfect match</p>   
+   </div>
+   </div>
+   </div>
+    <div class="col-md-4">
+    <div class="card h-100 text-center">
+    <div class="card-body"> 
+    <i class="fa-solid fa-calendar-days fa-3x mb-3" style="color: orangered;"></i>
+        <h2>Schedule Visit</h2>
+        <p>Book an appointment to meet your new friend</p>   
+   </div>
+   </div></div>
+    <div class="col-md-4">
+    <div class="card h-100 text-center">
+    <div class="card-body"> 
+     <i class="fa-solid fa-heart fa-3x mb-3" style="color: orangered;"></i>
+    <h2>Adopt and love</h2>
+    <p>Complete the adoption and welcome them home</p>   
+   </div>
+   </div>
+</div>
+ </section>
+ <!-- ready section -->
+ <section class="ready">
+    <h1 class="text-center">Ready to Make a Difference?</h1>
+    <p class="text-center text-muted mb-5">Start your journey to finding a loving companion today</p>
+       <div class="d-flex justify-content-center">
+    <a href="#"  class="btn btn-secondary">Start adopting Now</a>
+   </div>
+ </section>
+<!-- footer section -->
+ <section class="content">
+ <div class="row">
+  <div class="col-md-4">
+    <div class="cardf">
+      <div class="card-body">
+        <h5 class="card-title">Petfinder</h5>
+        <p class="card-text">Connecting loving families with pets in need since 2020.</p>
+       
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="cardf">
+      <div class="card-body"> 
+        <h5 class="card-title">Support</h5>
+        <p class="card-text">FAQ<br>Contact Us<br>Donate</p>
+      </div>
+    </div>
+  </div>
+   <div class="col-md-4">
+    <div class="cardf">
+      <div class="card-body">
+        <h5 class="card-title">Follow Us</h5>
+        <p class="card-text">Stay updated with our latest rescues and success stories.</p>
+       </div>
+       </div>
+       </div> 
+     </div>      
+    </section>
+     <div class="text-center mt-4">
+    <small class="text-body-secondary">Copyright © Petfinder 2026. All rights reserved.</small>
+    </div>
+</div>
+</body>
+</html>
+
+{%endblock%}

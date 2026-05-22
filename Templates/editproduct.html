@@ -1,0 +1,75 @@
+<!-- <form method="post" enctype="multipart/form-data">
+    {%csrf_token%}
+    <h2>Update Products</h2>
+    {{form}}
+    <button type="submit" >edit</button>
+</form> -->
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    
+    <link rel="stylesheet" href="{% static 'css/editpro.css' %}"> 
+</head>
+<body>
+
+    <div class="form-container">
+        <div class="form-card">
+            <h2>Update Product Details</h2>
+            
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
+                
+                <!-- Display global form errors if any -->
+                {% if form.non_field_errors %}
+                    <div class="error-banner">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <!-- Form Grid Layout -->
+                <div class="form-grid">
+                    
+                    {% for field in form %}
+                        <!-- We skip the 'user' field because it should be handled automatically by your view -->
+                        {% if field.name != 'user' %}
+                            <div class="form-group {% if field.name == 'name' or field.name == 'img' %}full-width{% endif %}">
+                                <label for="{{ field.id_for_label }}">
+                                    {{ field.label }}
+                                    {% if field.field.required %}<span class="required">*</span>{% endif %}
+                                </label>
+                                
+                                <!-- Render the actual Django form input widget -->
+                                {{ field }}
+                                
+                                <!-- Display field-specific validation errors -->
+                                {% if field.errors %}
+                                    <span class="field-error">{{ field.errors.0 }}</span>
+                                {% endif %}
+                                
+                                <!-- Display field help text if it exists -->
+                                {% if field.help_text %}
+                                    <span class="help-text">{{ field.help_text|safe }}</span>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{% url 'staffdashboard' %}" class="btn btn-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

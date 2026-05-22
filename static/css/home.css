@@ -1,0 +1,257 @@
+
+.hero 
+{   
+    background-color: antiquewhite;
+    margin: 5% auto; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+    text-align: center; 
+}
+.hero h1{
+    
+    font-size: 70px;
+    font-weight: 800;
+    line-height: 1.2;
+    color:black;
+    
+}
+.hero h1 .highlight{
+   
+    font-weight: 800;
+   
+    color:orangered
+}
+.hero p{
+  
+    font-size: 16px;
+    color:gray;
+    font-weight: 800;
+}
+.buttons
+{
+    display: flex;
+    gap:20px;
+}
+.btn{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 32 px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    cursor:pointer;
+    border:2px solid transparent;
+
+}
+.btn-primary {
+    background-color: #ff4500;
+    color: white;
+    box-shadow: 0 4px 15 px rgba(red, green, blue, alpha);
+    border-top-right-radius: 30px;
+    
+}
+.btn-secondary{
+    background-color: #ff4500;
+    color: white;
+    box-shadow: 0 4px 15 px rgba(red, green, blue, alpha);
+    border-top-right-radius: 30px;
+    
+}
+.btn-primary:hover{
+    
+    border-top-right-radius: 30px;
+}
+.btn-secondary:hover {
+    border-top-right-radius: 30px;
+   
+}
+      /*stat section*/          
+.stat{
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:30px;
+  margin-top: 80px;
+  width: 100%;
+  padding:40px 10%;
+}
+.stat-item
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+ background-color: white;
+ border-radius:16px ;
+ padding: 30px;
+ text-align: center;
+ box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+ transition: transform 0.3s,box-shadow 0.3s;
+ border: 1px solid #f0f0f0;
+}
+.stat-item h3 {
+  font-size: 36px;
+  font-weight: bold;
+  color:orangered;
+  margin-bottom: 8px;
+}
+.stat-item p {
+  font-size: 15px;
+  color: #777;
+  margin: 0;
+  font-weight: 500;
+}
+.stat-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+/*pet section */
+.pets
+{
+    display: grid;
+   grid-template-columns: repeat(3,1fr);
+  gap:30px;
+  margin-top: 80px;
+  width: 100%;
+  padding:40px 10%;
+}
+.card img {
+  height: 220px;
+  object-fit: cover;
+}
+/* how it works */
+.how {
+    background-color: #fffaf5;
+    padding: 60px 15px;
+}
+
+.how h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.how p {
+    font-size: 16px;
+    margin-bottom: 40px;
+}
+
+.step-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background-color: #ffffff;
+    padding: 30px;
+}
+
+.card h3 {
+    font-size: 24px;
+    color: #ff6b00;
+    margin-top: 15px;
+}
+
+.card p {
+    font-size: 15px;
+    color: #555;
+    margin-top: 10px;
+}
+
+.card-body i {
+    color: orangered;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+}
+/* ready */
+.ready {
+    background-color: #ff6b00;  /* Or any color you like */
+    color:black;
+    padding: 80px 20px;
+}
+
+.ready h1 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.ready p {
+    font-size: 18px;
+    margin-bottom: 30
+}
+
+.step-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+
+.card {
+        width: 100%;
+    }
+/*footer*/
+
+
+.content {
+  margin-top: 60px;
+  background-color: #222;
+  color: white;
+  padding: 60px 10%;
+
+}
+.content .row {
+  row-gap: 20px;
+}
+
+
+.cardf {
+  background: transparent;
+  border: none;
+}
+
+.cardf .card-body {
+  padding: 20px;
+}
+
+/* Headings */
+.cardf h5 {
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: white;
+}
+
+/* Text */
+.cardf p {
+  font-size: 14px;
+  color: #ccc;
+}
+
+/* List styling */
+.list-group-item {
+  background: transparent;
+  border: none;
+  padding: 5px 0;
+  color: #ccc;
+}
+
+/* Hover effect (optional) */
+.list-group-item:hover {
+  color: orangered;
+  cursor: pointer;
+}
+
+
+
+
+
+

@@ -1,0 +1,94 @@
+/* Dashboard Layout */
+body { background-color: #f4f7f6; font-family: 'Inter', sans-serif; }
+
+.sidebar {
+    width: 240px;
+    background: #2c3e50;
+    color: white;
+    position: fixed;
+    height: 100vh;
+    padding: 25px 15px;
+}
+
+.main-content {
+    margin-left: 240px;
+    padding: 30px;
+}
+
+/* Pet Card Styling */
+.pet-display-card { background: white; border-radius: 12px; padding: 20px; border: 1px solid #edf2f7 !important; }
+.info-row { display: flex; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f3f5; }
+.label-column { font-weight: 600; color: #7f8c8d; width: 130px; font-size: 0.9rem; }
+.pet-image { width: 80px; height: 80px; border-radius: 10px; object-fit: cover; }
+
+/* Status Tags */
+.status-tag { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: bold; }
+.status-available { background: #d4edda; color: #155724; }
+
+/* MESSAGE AREA - NO IMAGES VERSION */
+.msg-card { 
+    background: white; 
+    border-radius: 15px; 
+    overflow: hidden; 
+    position: sticky; 
+    top: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+.msg-card-header { 
+    background: #ffffff; 
+    padding: 20px; 
+    border-bottom: 2px solid #f4f7f6;
+}
+
+.chat-list-item {
+    display: block;
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 1px solid #f8f9fa;
+    transition: all 0.2s;
+}
+
+.chat-list-item:hover { 
+    background: #f0f7ff; 
+    border-left: 4px solid #0d6efd;
+    padding-left: 16px; /* Adjust for the border */
+}
+
+/* The Icon Box replacing the image */
+.chat-icon-box {
+    width: 42px;
+    height: 42px;
+    background: #e9ecef;
+    color: #495057;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.chat-list-item:hover .chat-icon-box {
+    background: #0d6efd;
+    color: white;
+}
+
+.chat-pet-title { 
+    font-weight: 700; 
+    font-size: 0.95rem; 
+    color: #2d3436; 
+}
+
+.chat-user-subtitle { 
+    font-size: 0.8rem; 
+    color: #636e72; 
+    margin-top: 2px;
+}
+
+.empty-msg-state { 
+    padding: 50px 20px; 
+    text-align: center; 
+    color: #b2bec3; 
+}

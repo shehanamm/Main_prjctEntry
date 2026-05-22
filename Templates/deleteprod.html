@@ -1,0 +1,9 @@
+<h2>Are you sure you want to delete "{{ prodel.name }}"?</h2>
+<p>This action is permanent and cannot be undone.</p>
+
+<!-- The form that triggers the POST request to delete -->
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" style="background-color: red; color: white;">Yes, Delete It</button>
+    <a href="{% url 'view_allproduct' %}">Cancel and Go Back</a>
+</form>

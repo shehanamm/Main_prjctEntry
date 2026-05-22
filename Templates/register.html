@@ -1,0 +1,18 @@
+
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/register.css' %}">
+
+<div class="form-container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4" style="width: 30rem;">
+        <h3 class="text-center mb-4">Create an Account</h3>
+        <form method="post" class="needs-validation">
+            {%csrf_token%}
+           {{ form.as_p }}
+           <button type="submit"class="btn btn-primary">Register</button>
+        </form>
+        <p class="text-center mt-3">
+            Already have an account? <a href="{% url 'login' %}">Sign in here</a>
+        </p>
+    </div>
+</div>

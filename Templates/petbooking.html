@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="card shadow border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h3>Confirm Your Booking</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Pet Name:</strong> {{ pet.pet_name }}</p>
+            <p><strong>Category:</strong> {{ pet.pet_cat.name }}</p>
+            <p><strong>Breed:</strong> {{ pet.pet_breed.breed_name }}</p>
+            <p><strong>Breed:</strong> {{ pet.pet_age }}</p>
+            <p><strong>Breed:</strong> {{ pet.perice }}</p>
+            <p><strong>Description:</strong> {{ pet.pet_desc }}</p>
+            <p><strong>Location:</strong> {{ pet.pet_location }}</p>
+              <p><strong>Posted Date:</strong> {{ pet.posted_date }}</p>
+
+            <form method="POST" class="mt-4">
+                {% csrf_token %}
+                <!-- Optional: Display a message input if you still want it -->
+                {{ form.message_to_donor }}
+                <p class="mt-3">Are you sure you want to book this pet?</p>
+                <button type="submit" class="btn btn-success">
+                    Confirm Booking
+                </button>
+                <a href="{% url 'petoperation:allpets_view' %}" class="btn btn-danger ml-2">
+                    Cancel
+                </a>
+            </form>
+        </div>
+{%endblock%}

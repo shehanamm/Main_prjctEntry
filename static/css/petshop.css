@@ -1,0 +1,119 @@
+/* Base Page Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+/* Disabled button styling for out of stock items */
+.disabled-btn {
+    background-color: #bdc3c7 !important;
+    color: #7f8c8d !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none; /* Disables mouse clicks via CSS */
+}
+/* Header Banner */
+.shop-header {
+    text-align: center;
+    background-color: #ff9f43;
+    color: white;
+    padding: 40px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.shop-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.5rem;
+}
+
+.shop-header p {
+    margin: 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+/* Layout Container */
+.shop-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Responsive Grid Matrix */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+/* Individual Product Cards */
+.product-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* Hover Zoom Effect */
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Inside Card Content Styling */
+.product-name {
+    margin: 0 0 10px 0;
+    font-size: 1.3rem;
+    color: #2c3e50;
+}
+
+.product-size {
+    margin: 0 0 15px 0;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
+
+.product-size span {
+    font-weight: 600;
+    color: #34495e;
+}
+
+.product-price {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+/* Action Buy Button */
+.buy-btn {
+    display: block;
+    text-align: center;
+    background-color: #10ac84;
+    color: white;
+    padding: 12px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.buy-btn:hover {
+    background-color: #0ca07a;
+}
+
+/* Empty State Handling */
+.no-products {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 50px;
+    color: #7f8c8d;
+    font-size: 1.2rem;
+}
