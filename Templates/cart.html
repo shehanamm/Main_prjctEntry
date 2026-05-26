@@ -1,117 +1,197 @@
-
-{% extends 'base.html'%}
 {% load static %}
-    <title>Shopping Cart</title>
-    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
-{% block content%}
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
 
-<div class="cart-container">
-    <h1 class="cart-title">Your Shopping Cart</h1>
-    <a href="{% url 'home' %}">Back to home</a>
-    {% if cart_items %}
-        <div class="cart-layout">
-            
-            <table class="cart-table">
-                <thead>
-                    <tr>
-                        <th>Product Details</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in cart_items %}
-                        <tr>
-                            <td data-label="Product Details">
-                                <div class="cart-product-cell">
-                                    {% if item.product.img %}
-                                        <img src="{{ item.product.img.url }}" class="cart-item-img" alt="{{ item.product.name }}">
-                                    {% else %}
-                                        <div class="cart-item-img" style="background:#f1f2f6; display:flex; align-items:center; justify-content:center; font-size:11px; color:#aaa;">No Image</div>
-                                    {% endif %}
-                                    <div class="cart-item-info">
-                                        <a href="{% url 'one_product_details' item.product.id %}">{{ item.product.name }}</a>
-                                        {% if item.product.cat %}
-                                            <p>Category: {{ item.product.cat.name }}</p>
-                                        {% endif %}
-                                    </div>
-                                </div>
-                            </td>
-                            <td data-label="Price">
-                                ₹{{ item.product.price }}
-                            </td>
-                            <td data-label="Quantity">
-                                <!-- Form container to change quantity selection directly inside the cart row -->
-                                <form method="POST" action="{% url 'addcart' item.product.id %}" class="cart-qty-inline-form">
-                                    {% csrf_token %}
-                                    <div class="quantity-control-wrapper">
-                                        <!-- Minus Button -->
-                                        <button type="button" class="qty-btn" onclick="updateCartQty(this, -1)">-</button>
-                                        
-                                        <!-- Displays selection data, submits update automatically when changed -->
-                                        <input type="number" name="quantity" value="{{ item.quantity }}" min="1" readonly class="input-quantity-field" onchange="this.form.submit()">
-                                        
-                                        <!-- Plus Button -->
-                                        <button type="button" class="qty-btn" onclick="updateCartQty(this, 1)">+</button>
-                                    </div>
-                                </form>
-                            </td>
-                            <td data-label="Total">
-                                <span class="item-total-price">${{ item.total_price }}</span>
-                                <a href="{% url 'cart_item_remove' item.id  %}">Remove</a>
-                            </td>
-                               <td data-label="Total">
-                                <span class="item-purchase"></span>
-                                <a href="{% url 'order_placed'  %}">Order Placed</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-<hr>
-            <div class="cart-summary-box">
-                <div class="summary-row">
-                    <span>Distinct Items:</span>
-                    <span>{{ cart_items.count }}</span>
-                </div>
-                <div class="summary-row">
-                    <span>Shipping Charges:</span>
-                    <span style="color: #27ae60; font-weight: 600;">FREE</span>
-                </div>
-                <div class="summary-row grand-total">
-                    <span>Grand Total:</span>
-                    <span>₹{{ grand_total }}</span>
-                </div>
-                
-                <div class="cart-actions">
-                    <a href="{% url 'view_allproduct' %}" class="btn-cart btn-continue">Continue Shopping</a>
-                    <!-- <a href="#" class="btn-cart btn-checkout">Buy</a> -->
-                </div>
-            </div>
+<div class="container py-4">
+    <div class="cart-container">
 
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+            <h1 class="cart-title mb-0">Your Shopping Cart</h1>
+            <a href="{% url 'home' %}" class="btn btn-outline-primary">
+                Back to Home
+            </a>
         </div>
-    {% else %}
-        <div class="empty-cart-message">
-            <h2>Your cart is currently empty!</h2>
-            <p>Explore our selection of products and add some items to get started.</p>
-            <div style="max-width: 220px; margin: 25px auto 0 auto;">
-                <a href="{% url 'allhome' %}" class="btn-cart btn-continue">Start Shopping</a>
-            </div>
-        </div>
-    {% endif %}
-</div>
-  {% if messages %}
+
+        {% if messages %}
             {% for message in messages %}
                 <div class="alert alert-info alert-dismissible fade show" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}
         {% endif %}
 
-            
-<!-- JavaScript to handle click modifiers and auto-submit structural change updates -->
-<script src="{% static 'js/cart.js' %}"></script>
+        {% if cart_items %}
 
-{%endblock%}
+        <div class="row g-4">
+
+            <!-- CART TABLE -->
+            <div class="col-lg-8">
+                <div class="table-responsive shadow-sm rounded">
+                    <table class="table align-middle cart-table mb-0">
+
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        {% for item in cart_items %}
+                        <tr>
+
+                            <!-- PRODUCT -->
+                            <td>
+                                <div class="d-flex align-items-center gap-3 flex-wrap">
+
+                                    {% if item.product.img %}
+                                        <img src="{{ item.product.img.url }}"
+                                             class="cart-item-img"
+                                             style="width:60px;height:60px;object-fit:cover;border-radius:4px;">
+                                    {% else %}
+                                        <div class="d-flex align-items-center justify-content-center bg-light text-muted"
+                                             style="width:60px;height:60px;border:1px dashed #ccc;">
+                                            No Image
+                                        </div>
+                                    {% endif %}
+
+                                    <div>
+                                        <a href="{% url 'one_product_details' item.product.id %}"
+                                           class="fw-bold text-decoration-none text-dark d-block">
+                                            {{ item.product.name }}
+                                        </a>
+
+                                        {% if item.product.cat %}
+                                        <p class="mb-0 text-muted small">
+                                            Category: {{ item.product.cat.name }}
+                                        </p>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                            </td>
+
+                            <!-- PRICE -->
+                            <td>₹{{ item.product.price }}</td>
+
+                            <!-- QUANTITY UPDATE -->
+                            <td>
+
+                                <form method="POST"
+                                      action="{% url 'update_cart' item.id %}">
+                                    {% csrf_token %}
+
+                                    <!-- <div class="d-flex align-items-center">
+
+                                    <button type="button" onclick="updateCartQty(this, -1)">-</button>
+                                             -->
+                                   
+                                       
+                                        <input type="number"
+                                               name="quantity"
+                                               value="{{ item.quantity }}"
+                                               min="1"
+                                               class="form-control text-center mx-1"
+                                               style="width:60px;"
+                                               max="10">
+
+                                         <!-- <button type="button" class="qty-btn" onclick="updateCartQty(this, 1)">+</button> -->
+
+                                        <button type="submit"
+                                                class="btn btn-sm btn-success ms-2">
+                                            Update
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </td>
+
+                            <!-- TOTAL -->
+                            <td class="fw-bold">
+                                ₹{{ item.total_price }}
+                            </td>
+
+                            <!-- ACTION -->
+                            <td class="text-center">
+                                <a href="{% url 'cart_item_remove' item.id %}"
+                                   class="btn btn-sm btn-danger">
+                                    Remove
+                                </a>
+                            </td>
+                                <td class="text-center">
+                                <a href="{% url 'order_placed'  %}"
+                                   class="btn btn-sm btn-danger">
+                                  Order Placed
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+     <hr>
+            <!-- SUMMARY -->
+            <div class="col-lg-4">
+
+                <div class="card shadow-sm border-0 sticky-top" style="top:20px;">
+
+                    <div class="card-header bg-primary text-white fw-bold py-3">
+                        Cart Summary
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">No.of ordered Items:</span>
+                            <span class="fw-bold">{{ cart_items|length }}</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Shipping:</span>
+                            <span class="text-success fw-bold">FREE</span>
+                        </div>
+
+                        
+
+                        <div class="d-flex justify-content-between fw-bold fs-5 mb-4">
+                            <span>Total:</span>
+                            <span class="text-primary">₹{{ grand_total }}</span>
+                        </div>
+                    <hr>
+                        <a href="{% url 'allhome' %}"
+                           class="btn btn-outline-secondary w-100">
+                            Continue Shopping
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% else %}
+
+        <div class="text-center py-5 shadow-sm rounded bg-white mt-4">
+            <h3 class="text-muted">Your shopping cart is empty!</h3>
+            <p class="text-muted mb-4">Add items to your cart.</p>
+            <a href="{% url 'allhome' %}" class="btn btn-primary px-4">
+                Shop Now
+            </a>
+        </div>
+
+        {% endif %}
+
+    </div>
+</div>
+
+<script src="{% static 'js/cart.js' %}"></script>

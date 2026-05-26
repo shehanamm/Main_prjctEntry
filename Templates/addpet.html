@@ -113,11 +113,10 @@
                         </div>
                     <div class="mb-3">
                         <label for="id_status" class="form-label fw-bold">Current Status</label>
-                            <select name="status" id="id_status" class="form-select">
-    <!-- The 'value' must match your Django choices exactly -->
-                        <option value="available" selected>Available</option>
-                        <option value="adopted">Adopted</option>
-                        </select>
+                           <div class="mb-3">
+                       <label class="form-label fw-bold">Current Status</label>
+                          {{ form.status }}
+    
                           <div class="form-text">Change this to "Adopted" once the pet finds a home.</div>
                         </div>
                         <button type="submit" class="btn btn-success w-100"> Add Pet</button><br>
@@ -138,9 +137,6 @@
 
 <!-- JS -->
 <script src="{% static 'js/add_catbreed.js' %}"></script>
-
-
-{%endblock%}
 {% if messages %}
     {% for message in messages %}
         <div class="alert alert-info">
@@ -148,3 +144,5 @@
         </div>
     {% endfor %}
 {% endif %}
+
+{%endblock%}

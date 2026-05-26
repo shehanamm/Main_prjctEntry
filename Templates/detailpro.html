@@ -1,76 +1,151 @@
-{% extends 'base.html'%}
+{% extends 'base.html' %}
 {% load static %}
 
-    <title>{{ pro.name }} - Details</title>
-    <!-- Separate Product Detail Stylesheet -->
-    <link rel="stylesheet" href="{% static 'css/proonedetails.css' %}">
-{%block content%}
+{% block content %}
 
-<div class="product-detail-container">
-    <div class="product-wrapper">
-        
-        <!-- Left Image Card Layout -->
-        <div class="product-image-section">
-            {% if pro.img %}
-                <img src="{{ pro.img.url }}" alt="{{ pro.name }}">
-            {% else %}
-                <p>No Image Available</p>
-            {% endif %}
-        </div>
-        
-        <!-- Right Details Configuration Panel -->
-        <div class="product-info-section">
-            <h3 class="product-title">{{ pro.name }}</h3>
-            
-            {% if pro.cat %}
-                <div class="product-category">Category: {{ pro.cat.name }}</div>
-            {% endif %}
-            
-            <!-- Safe lowercase access to the field evaluated in your models.py -->
-            <div class="product-price">${{ pro.price }}</div>
-            
-            <div class="product-size">Size: {{ pro.size }}</div>
-            
-            <div class="product-description">
-                <strong>Description:</strong>
-                <p>{{ pro.pro_desc|default:"No description provided for this product." }}</p>
+<link rel="stylesheet" href="{% static 'css/proonedetails.css' %}">
+
+<div class="container py-5">
+
+    <div class="row g-4 align-items-start">
+
+        <!-- Product Image -->
+        <div class="col-12 col-md-6">
+
+            <div class="product-image-section text-center">
+
+                {% if pro.img %}
+                    <img src="{{ pro.img.url }}"
+                         alt="{{ pro.name }}"
+                         class="img-fluid rounded shadow product-image">
+                {% else %}
+                    <div class="no-image-box">
+                        No Image Available
+                    </div>
+                {% endif %}
+
             </div>
-            
-            <!-- Quantity Selection & Actions Form -->
-        
-<form method="POST" action="{% url 'addcart' pro.id %}" class="cart-quantity-form" id="cart-form">
-    {% csrf_token %}
-    
-    <!-- STATE 1: Initial "Add to Cart" Button -->
-    <div id="initial-add-state" class="button-group">
-        <a href="{% url 'home' %}" class="btn btn-home">Back to Home</a>
-        <button type="button" class="btn btn-cart" onclick="showQuantityControls()">Add to Cart</button>
-    </div>
 
-    <!-- STATE 2: Hidden by default, shows when "Add to Cart" is clicked -->
-    <div id="quantity-adjust-state" class="quantity-wrapper standard-gap" style="display: none;">
-        <div class="quantity-control">
-            <!-- Minus Button -->
-            <button type="button" class="qty-btn" onclick="updateQuantity(-1)">-</button>
-            <!-- Quantity Input Field -->
-            <input type="number" name="quantity" id="quantity-field" value="1" min="1" readonly class="input-quantity-field">
-            <!-- Plus Button -->
-            <button type="button" class="qty-btn" onclick="updateQuantity(1)">+</button>
         </div>
 
-        <div class="button-group">
-            <a href="{% url 'home' %}" class="btn btn-home">Back to Home</a>
-            <button type="submit" class="btn btn-cart-confirm">Confirm & Add</button>
+        <!-- Product Details -->
+        <div class="col-12 col-md-6">
+
+            <div class="product-info-section">
+
+                <h2 class="product-title mb-3">
+                    {{ pro.name }}
+                </h2>
+
+                {% if pro.cat %}
+                    <div class="product-category mb-2">
+                        Category:
+                        <span class="fw-bold">{{ pro.cat.name }}</span>
+                    </div>
+                {% endif %}
+
+                <div class="product-price mb-3">
+                    ₹{{ pro.price }}
+                </div>
+
+                <div class="product-size mb-3">
+                    <strong>Size:</strong> {{ pro.size }}
+                </div>
+
+                <div class="product-description mb-4">
+
+                    <strong>Description:</strong>
+
+                    <p class="mt-2">
+                        {{ pro.pro_desc|default:"No description provided for this product." }}
+                    </p>
+
+                </div>
+
+                <!-- Add To Cart Form -->
+                <form method="POST"
+                      action="{% url 'addcart' pro.id %}"
+                      class="cart-quantity-form"
+                      id="cart-form">
+
+                    {% csrf_token %}
+
+                    <!-- Initial Buttons -->
+                    <div id="initial-add-state"
+                         class="d-flex flex-wrap gap-3">
+
+                        <a href="{% url 'home' %}"
+                           class="btn btn-outline-secondary">
+                            Back to Home
+                        </a>
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                onclick="showQuantityControls()">
+
+                            Add to Cart
+
+                        </button>
+
+                    </div>
+
+                    <!-- Quantity Section -->
+                    <div id="quantity-adjust-state"
+                         class="mt-4"
+                         style="display:none;">
+
+                        <div class="quantity-control d-flex align-items-center gap-3 mb-4">
+
+                            <button type="button"
+                                    class="qty-btn"
+                                    onclick="updateQuantity(-1)">
+                                -
+                            </button>
+
+                            <input type="number"
+                                   name="quantity"
+                                   id="quantity-field"
+                                   value="1"
+                                   min="1"
+                                   inputmode="numeric"
+                                   class="form-control text-center quantity-input">
+
+                            <button type="button"
+                                    class="qty-btn"
+                                    onclick="updateQuantity(1)">
+                                +
+                            </button>
+
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-3">
+
+                            <a href="{% url 'home' %}"
+                               class="btn btn-outline-secondary">
+                                Back to Home
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-success">
+
+                                Confirm & Add
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
         </div>
-    </div>
-</form>
 
     </div>
+
 </div>
 
-<!-- JavaScript to handle quantity increment/decrement -->
-<script src="{% static 'js/detailpro.js' %}">
-   
-</script>
+<script src="{% static 'js/detailpro.js' %}"></script>
 
-{%endblock%}
+{% endblock %}

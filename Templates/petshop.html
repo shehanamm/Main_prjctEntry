@@ -1,64 +1,134 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block content %}
+
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'css/allpets.css' %}">
+<link rel="stylesheet" href="{% static 'css/petshop.css' %}">
+
+<!-- Banner -->
 <div class="banner">
-    <link rel="stylesheet" href="{% static 'css/allpets.css' %}">
-    <img src="{% static 'img/petshop1.png' %}">
+    <img src="{% static 'img/petshop1.png' %}"
+         alt="Pet Shop Banner"
+         class="img-fluid w-100 banner-img">
 </div>
-    <!-- Linking the separate CSS file -->
-    <link rel="stylesheet" href="{% static 'css/petshop.css' %}">
-</head>
-<body>
 
-    <!-- Header Section -->
-    <header class="shop-header">
-        <h1>Welcome to Our Pet Shop!</h1>
-        <p>Find the best supplies, toys, and treats for your furry friends.</p>
-    </header>
+<!-- Header -->
+<section class="shop-header text-center py-5">
 
-    <!-- Product Grid Container -->
-    <main class="shop-container">
-        <div class="product-grid">
-            
-            <!-- Loop through each product item sent from the Django view -->
-            {% for item in allobj %}
-                <div class="product-card">
-                    <div class="product-info">
-                        <h3 class="product-name">{{ item.name }}</h3>
-                        <img class="product-image" src="{{ item.img.url }}">
-                        <p class="product-size">Size: <span>{{ item.size }}</span></p>
-                        <p class="product-price">${{ item.price }}</p>
-                        
-                        <!-- --- STOCK STATUS INDICATOR --- -->
+    <div class="container">
+
+        <h1 class="fw-bold">
+            Welcome to Our Pet Shop!
+        </h1>
+
+        <p class="lead">
+            Find the best supplies, toys, and treats
+            for your furry friends.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- Products -->
+<div class="container pb-5">
+
+    <div class="row g-4">
+
+        {% for item in allobj %}
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+
+            <div class="card h-100 shadow-sm border-0 product-card">
+
+                <!-- Product Image -->
+                {% if item.img %}
+                    <img src="{{ item.img.url }}"
+                         class="card-img-top product-image"
+                         alt="{{ item.name }}">
+                {% else %}
+                    <div class="no-image-box">
+                        No Image
+                    </div>
+                {% endif %}
+
+                <!-- Card Body -->
+                <div class="card-body d-flex flex-column">
+
+                    <h5 class="product-name">
+                        {{ item.name }}
+                    </h5>
+
+                    <p class="product-size mb-1">
+                        Size:
+                        <span>{{ item.size }}</span>
+                    </p>
+
+                    <p class="product-price">
+                        ₹{{ item.price }}
+                    </p>
+
+                    <!-- Stock Status -->
+                    {% if item.stock > 0 %}
+
+                        <p class="stock-status text-success fw-bold small">
+                            In Stock ({{ item.stock }} available)
+                        </p>
+
+                    {% else %}
+
+                        <p class="stock-status text-danger fw-bold small text-uppercase">
+                            Out of Stock
+                        </p>
+
+                    {% endif %}
+
+                    <!-- Button -->
+                    <div class="mt-auto">
+
                         {% if item.stock > 0 %}
-                            <p class="stock-status in-stock" style="color: #28a745; font-size: 0.9rem; margin-top: 5px; font-weight: 600;">
-                                In Stock ({{ item.stock }} available)
-                            </p>
+
+                            <a href="{% url 'one_product_details' item.id %}"
+                               class="btn btn-primary w-100">
+
+                                Buy Now
+
+                            </a>
+
                         {% else %}
-                            <p class="stock-status out-of-stock" style="color: #dc3545; font-size: 0.9rem; margin-top: 5px; font-weight: bold; text-transform: uppercase;">
+
+                            <button class="btn btn-secondary w-100" disabled>
                                 Out of Stock
-                            </p>
+                            </button>
+
                         {% endif %}
+
                     </div>
 
-                    <!-- --- CONDITIONAL ACTION BUTTON --- -->
-                    {% if item.stock > 0 %}
-                        <!-- Active link if item is available -->
-                        <a href="{% url 'one_product_details' item.id %}" class="buy-btn">Buy Now</a>
-                    {% else %}
-                        <!-- Disabled layout block if out of stock -->
-                        <a href="#" class="buy-btn disabled-btn" style="background-color: #6c757d; cursor: not-allowed; pointer-events: none; text-align: center;">Out of Stock</a>
-                    {% endif %}
                 </div>
-            {% empty %}
-                <div class="no-products">
-                    <p>No products available at the moment. Check back soon!</p>
-                </div>
-            {% endfor %}
+
+            </div>
 
         </div>
-    </main>
 
-</body>
-</html>
+        {% empty %}
+
+        <div class="col-12">
+
+            <div class="alert alert-info text-center">
+
+                No products available at the moment.
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
 {% endblock %}

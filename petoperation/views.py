@@ -52,7 +52,7 @@ def update_petdetails(request,id):
       form= Pet_addform(request.POST,request.FILES,instance=pet)
       if form.is_valid():
        form.save()
-       return redirect('allpets_view')
+       return redirect('donordashboard')
    else:
         form=Pet_addform(instance=pet)
    return render(request,'editpet.html',{'form':form})

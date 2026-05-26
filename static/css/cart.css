@@ -1,69 +1,61 @@
-/* Layout configurations for custom quantity field inputs */
-.cart-form-group {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.cart-item-img{
+    width:80px;
+    height:80px;
+    object-fit:cover;
+    border-radius:10px;
 }
 
-.quantity-selector-block {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    font-size: 1rem;
-    color: #34495e;
-    font-weight: 500;
+.no-img{
+    background:#f1f1f1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    color:#777;
 }
 
-.quantity-control-wrapper {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ced6e0;
-    border-radius: 6px;
-    overflow: hidden;
-    background-color: #ffffff;
-    width: fit-content;
+.quantity-control-wrapper{
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-/* Control buttons (+ and -) */
-.qty-btn {
-    background-color: #f1f2f6;
-    border: none;
-    color: #2c3e50;
-    font-size: 1.2rem;
-    font-weight: 600;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    transition: background 0.15s ease;
-    user-select: none;
+.qty-btn{
+    width:35px;
+    height:35px;
+    border:none;
+    background:#0d6efd;
+    color:white;
+    border-radius:5px;
 }
 
-.qty-btn:hover {
-    background-color: #e4e7eb;
+.input-quantity-field{
+    width:60px;
+    text-align:center;
 }
 
-.qty-btn:active {
-    background-color: #dcdde1;
+
+
+.summary-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
 }
 
-/* Clean numeric output tracking block */
-.input-quantity-field {
-    width: 50px;
-    height: 40px;
-    border: none;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-align: center;
-    color: #2c3e50;
-    background-color: #ffffff;
-    outline: none;
-
+.grand-total{
+    font-size:20px;
+    font-weight:bold;
 }
 
-/* Removes standard browser up/down arrows for Chrome, Safari, and Edge */
-.input-quantity-field::-webkit-outer-spin-button,
-.input-quantity-field::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+@media(max-width:768px){
+
+    .cart-item-img{
+        width:60px;
+        height:60px;
+    }
+
+    .cart-title{
+        font-size:24px;
+    }
+
 }

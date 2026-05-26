@@ -1,7 +1,7 @@
 
 .hero 
 {   
-    background-color: antiquewhite;
+    /* background-color:orangered; */
     margin: 5% auto; 
     display: flex;
     flex-direction: column;
@@ -249,9 +249,27 @@
   color: orangered;
   cursor: pointer;
 }
+/* ==========================================================================
+   RESPONSIVE DESIGN
+========================================================================== */
 
+@media (max-width: 768px) {
 
+    .hero h1 {
+        font-size: 45px;
+    }
 
+    .stat {
+        grid-template-columns: 1fr;
+    }
 
+    .pets {
+        grid-template-columns: 1fr;
+    }
+
+    .buttons {
+        flex-direction: column;
+    }
+}
 
 

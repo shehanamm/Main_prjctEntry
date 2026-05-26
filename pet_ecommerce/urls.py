@@ -13,6 +13,7 @@ urlpatterns=[
     path('removecart/<int:id>',cart_item_remove,name="cart_item_remove"),
     path('viewstaff/<int:id>',staff_view,name="staff_view"),
     path('allprohome',allprohome,name="allhome"),
-    path('order_placed',order_placed,name='order_placed')
+    path('order_placed',order_placed,name='order_placed'),
+    path('cart/update/<int:item_id>/',update_cart, name='update_cart'),
     
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

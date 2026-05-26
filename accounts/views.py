@@ -84,7 +84,7 @@ def userdashboard(request):
        return redirect('Error')
     else:
     #   usr=CustomUser.objects.filter(role='user')
-      pro=UserProfile.objects.get(user=request.user)
+      pro, created = UserProfile.objects.get_or_create(user=request.user )
       pet_user=Pet.objects.filter(user=request.user)
        
       my_booking=Booking.objects.filter(user=request.user,).select_related('pet')
@@ -115,9 +115,9 @@ def admindashboard(request):
     total_pets=Pet.objects.count()
     # pending_pets=Pet.objects.filter(status='pending').count()
     adopted_pets=Pet.objects.filter(status='adopted').count()
-    
+    products=Product.objects.all().order_by('-id')[:5]
     pets=Pet.objects.all().order_by('-id')[:5]
-    return render(request, 'admindash.html',{'pets':pets,'total_pets':total_pets,'adopted_pets':adopted_pets})
+    return render(request, 'admindash.html',{'pets':pets,'total_pets':total_pets,'adopted_pets':adopted_pets,'products':products})
 
 @login_required(login_url='/accounts/login')
 def staffdashboard(request):

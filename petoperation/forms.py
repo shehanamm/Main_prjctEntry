@@ -12,7 +12,7 @@ class Breed_form(forms.ModelForm):
 class Pet_addform(forms.ModelForm):
     class Meta:
         model=Pet
-        exclude=['user','status','posted_date']
+        exclude=['user','posted_date']
 class Pet_bookingform(forms.ModelForm):
     class Meta:
         model=Booking

@@ -23,7 +23,7 @@
                     <p>{{ p.pet_location }}</p>
 
                     <!-- VIEW -->
-                    <a href="{% url 'petoperation:allpets_view'  %}" class="btn btn-primary btn-sm">
+                    <a href="{% url 'petoperation:view_allpet' p.id  %}" class="btn btn-primary btn-sm">
                         View
                     </a>
 
