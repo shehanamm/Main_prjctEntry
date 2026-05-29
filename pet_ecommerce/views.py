@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from.models import Product,Cart_item,Cart
+from accounts.models import Complaint
 from.forms import Product_form
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -50,28 +51,6 @@ def delete_product(request,id):
     prodel.delete()
     return redirect('view_allproduct')
   return render(request,'deleteprod.html',{'prodel':prodel})
-# @login_required(login_url='/accounts/login')
-# def user_addcart_product(request, pro_id):
-#  if request.user.role not in ['user', 'donor']:
-#    return redirect('Error')
-#  product=get_object_or_404(Product,id=pro_id)
-#  quantity = int(request.POST.get('quantity', 1))
- 
-#  if quantity < 1:
-#         quantity = 1
-#  cart, created = Cart.objects.get_or_create(user=request.user)
-#  cart_item, item_created = Cart_item.objects.get_or_create(
-#         cart=cart,
-#         product=product,
-#         defaults={'quantity':quantity}
-#     )
-#  if not item_created:
-#         cart_item.quantity=quantity
-#         cart_item.save()
-
-#  return redirect('user_cart')
-
-
 
 @login_required(login_url='/accounts/login')
 def user_addcart_product(request, pro_id):
@@ -88,11 +67,10 @@ def user_addcart_product(request, pro_id):
 
     cart, _ = Cart.objects.get_or_create(user=request.user)
 
-    # 🔥 FORCE SINGLE ROW PER PRODUCT
     cart_item = Cart_item.objects.filter(cart=cart, product=product).first()
 
     if cart_item:
-        cart_item.quantity = quantity   # overwrite always
+        cart_item.quantity = quantity   
         cart_item.save()
     else:
         Cart_item.objects.create(
@@ -175,3 +153,23 @@ def update_cart(request, item_id):
         messages.success(request, "Cart updated successfully")
 
     return redirect('user_cart')
+@login_required
+def staff_send_complaint(request):
+
+    if request.user.role != 'staff':
+        return redirect('Error')
+
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        Complaint.objects.create(
+            user=request.user,
+            subject=subject,
+            message=message,
+            type='staff'
+        )
+
+        return redirect('staffdashboard')
+
+    return render(request, 'send_complaint.html')

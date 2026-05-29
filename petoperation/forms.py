@@ -1,5 +1,5 @@
 from django import forms
-from.models import Category,Breed,Pet,Booking,Announcement
+from.models import Category,Breed,Pet,Booking,Announcement,DonorRating,SystemRating
  
 class Category_form(forms.ModelForm):
     class Meta:
@@ -41,4 +41,64 @@ class AnnouncementForm(forms.ModelForm):
         widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+        }
+
+RATING_CHOICES = [
+    (1, '⭐'),
+    (2, '⭐⭐'),
+    (3, '⭐⭐⭐'),
+    (4, '⭐⭐⭐⭐'),
+    (5, '⭐⭐⭐⭐⭐'),
+]
+
+class DonorRatingForm(forms.ModelForm):
+
+    class Meta:
+        model = DonorRating
+        fields = ['rating', 'review']
+
+        widgets = {
+            'rating': forms.Select(choices=RATING_CHOICES, attrs={
+                'class': 'form-control'
+            }),
+
+            'review': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Write your review...'
+            })
+        }
+
+from django import forms
+from .models import SystemRating
+
+RATING_CHOICES = [
+    (1, '⭐'),
+    (2, '⭐⭐'),
+    (3, '⭐⭐⭐'),
+    (4, '⭐⭐⭐⭐'),
+    (5, '⭐⭐⭐⭐⭐'),
+]
+
+class SystemRatingForm(forms.ModelForm):
+
+    class Meta:
+        model = SystemRating
+        fields = ['rating', 'review']
+
+        widgets = {
+            'rating': forms.Select(
+                choices=RATING_CHOICES,
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            'review': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows': 4,
+                    'placeholder': 'Write your feedback about the system...'
+                }
+            )
         }

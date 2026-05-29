@@ -32,5 +32,8 @@ urlpatterns = [
  path('deleteuseradmin/<int:id>',user_deleteadmin,name='user_deleteadmin'),
  path('deletedonoradmin/<int:id>',donor_deleteadmin,name='donor_deleteadmin'),
  path('deletestaffadmin/<int:id>',staff_deleteadmin,name='staff_deleteadmin'),
-
+ path('adminblock/<int:id>/',admin_block_user,name='admin_block_user'),
+ path('complaint', send_complaint, name='send_complaint'),
+ path('adminreply/<int:id>/', reply_complaint, name='reply_complaint'),
+ path('staffsendcomplaint',staff_send_complaint,name='staff_send_complaint'),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

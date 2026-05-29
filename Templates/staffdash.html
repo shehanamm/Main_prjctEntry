@@ -141,7 +141,84 @@
         </table>
       </div>
     </div>
+<hr class="my-4">
 
+<section class="dashboard-section">
+    <h3>Staff Complaints</h3>
+
+    <!-- SEND COMPLAINT TO ADMIN -->
+    <div class="custom-card shadow-sm p-3 mb-4">
+        <h5>Send Complaint to Admin</h5>
+
+        <form method="post" action="{% url 'staff_send_complaint' %}">
+            {% csrf_token %}
+
+            <div class="mb-2">
+                <input type="text" name="subject"
+                    class="form-control"
+                    placeholder="Subject" required>
+            </div>
+
+            <div class="mb-2">
+                <textarea name="message"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Write complaint to admin..."
+                    required></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-danger btn-sm">
+                Send to Admin
+            </button>
+        </form>
+    </div>
+
+    <!-- COMPLAINT LIST -->
+    <div class="row g-3">
+
+        {% for c in complaints %}
+        <div class="col-md-6">
+
+            <div class="custom-card shadow-sm p-3">
+
+                <!-- SUBJECT -->
+                <h5>{{ c.subject }}</h5>
+
+                <!-- MESSAGE -->
+                <p class="text-muted">
+                    {{ c.message|truncatechars:80 }}
+                </p>
+
+                <!-- STATUS -->
+                <p>
+                    {% if c.status == "pending" %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% elif c.status == "reviewed" %}
+                        <span class="badge bg-info">Reviewed</span>
+                    {% else %}
+                        <span class="badge bg-success">Resolved</span>
+                    {% endif %}
+                </p>
+
+                <!-- ADMIN REPLY -->
+                {% if c.admin_reply %}
+                    <div class="alert alert-success p-2">
+                        <strong>Admin Reply:</strong><br>
+                        {{ c.admin_reply }}
+                    </div>
+                {% else %}
+                    <p class="text-muted small">No reply yet</p>
+                {% endif %}
+
+            </div>
+
+        </div>
+        {% empty %}
+            <p class="text-muted ms-3">No complaints found.</p>
+        {% endfor %}
+
+    </div>
+</section>
   </main>
 
 </div>

@@ -3,13 +3,16 @@ from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import Reguser,DonorProfileForm,UserProfileForm,StaffProfileForm
-from.models import CustomUser,DonorProfile,UserProfile,StaffProfile
+from .forms import Reguser,DonorProfileForm,UserProfileForm,StaffProfileForm,ComplaintForm
+from.models import CustomUser,DonorProfile,UserProfile,StaffProfile,Complaint
 from petoperation.models import Booking,Announcement
 from pet_ecommerce.models import Product
 from petoperation.views import Pet,ChatMessage,post_announcement
 from accounts.utils import Error
 from django.utils import timezone
+from django.contrib.auth import get_user_model
+from django.contrib.sessions.models import Session
+
 # Create your views here.
 def home(request):
     now = timezone.now()
@@ -86,13 +89,13 @@ def userdashboard(request):
     #   usr=CustomUser.objects.filter(role='user')
       pro, created = UserProfile.objects.get_or_create(user=request.user )
       pet_user=Pet.objects.filter(user=request.user)
-       
       my_booking=Booking.objects.filter(user=request.user,).select_related('pet')
     
       user_chat=Booking.objects.filter(user=request.user)
-      unread_count = ChatMessage.objects.filter(booking__user=request.user, 
-        is_read=False).exclude(sender=request.user).count()
-      return render(request,'user.html',{'pro':pro,'pet_user':pet_user,'my_booking':my_booking,'user_chat':user_chat,'unread_count':unread_count})
+      unread_count = ChatMessage.objects.filter(booking__user=request.user ,is_read=False).exclude(sender=request.user).count()
+      complaints = Complaint.objects.filter(user=request.user, type='user').order_by('-created_at')
+        
+      return render(request,'user.html',{'pro':pro,'pet_user':pet_user,'my_booking':my_booking,'user_chat':user_chat,'unread_count':unread_count,'complaints':complaints})
     
 @login_required(login_url='/accounts/login')
 def donordashboard(request):
@@ -105,8 +108,11 @@ def donordashboard(request):
         donor_chat=Booking.objects.filter(pet__user=request.user).select_related('user','pet')
         unread_count = ChatMessage.objects.filter(booking__user=request.user, 
         is_read=False).exclude(sender=request.user).count()
-
-    return render(request,'donor.html',{'don':don,'pro':pro,'pet_donate':pet_donate,'donor_chat':donor_chat,'unread_count':unread_count})
+        complaints = Complaint.objects.filter(
+             user=request.user,
+              type='donor'
+             ).order_by('-created_at')
+    return render(request,'donor.html',{'don':don,'pro':pro,'pet_donate':pet_donate,'donor_chat':donor_chat,'unread_count':unread_count,'complaints':complaints})
     
 @login_required(login_url='/accounts/login') 
 def admindashboard(request):
@@ -117,7 +123,9 @@ def admindashboard(request):
     adopted_pets=Pet.objects.filter(status='adopted').count()
     products=Product.objects.all().order_by('-id')[:5]
     pets=Pet.objects.all().order_by('-id')[:5]
-    return render(request, 'admindash.html',{'pets':pets,'total_pets':total_pets,'adopted_pets':adopted_pets,'products':products})
+    complaints = Complaint.objects.all().order_by('-created_at')
+
+    return render(request, 'admindash.html',{'pets':pets,'total_pets':total_pets,'adopted_pets':adopted_pets,'products':products,'complaints':complaints})
 
 @login_required(login_url='/accounts/login')
 def staffdashboard(request):
@@ -126,19 +134,45 @@ def staffdashboard(request):
     else:
      pro=StaffProfile.objects.get(user=request.user)
      products=Product.objects.all().order_by('-id')[:5]
-     return render(request, 'staffdash.html',{'pro':pro,'products':products})
+     complaints = Complaint.objects.filter(type='staff').order_by('-created_at')
+
+     return render(request, 'staffdash.html',{'pro':pro,'products':products,'complaints':complaints})
 
 #loginand logout------------
+
+
+
 def loginpage(request):
+
+
+
     if request.method == 'POST':
+
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        # STEP 1: authenticate FIRST
         user = authenticate(request, username=username, password=password)
-        if user:
+
+        if user is not None:
+
+            # STEP 2: NOW check block
+            if user.is_blocked:
+                messages.error(
+                    request,
+                    "Your account has been blocked by admin. Please contact admin."
+                )
+                return redirect('login')
+
             login(request, user)
             return redirect('dashboard')
+
+        # invalid login
+        messages.error(request, "Invalid username or password")
+        return redirect('login')
+
     return render(request, 'login.html')
+
 def logoutpage(request):
     logout(request)
     return redirect('home')
@@ -285,3 +319,108 @@ def staff_deleteadmin(request,id):
     if request.method=='POST':
      del_staff.delete()
      return redirect('admindashboard')
+@login_required
+def admin_block_user(request, id):
+
+    if request.user.role != 'admin':
+        return redirect('Error')
+
+    user = get_object_or_404(CustomUser, id=id)
+
+    # Prevent admin blocking themselves
+    if user == request.user:
+        return redirect('all_users')
+
+    user.is_blocked = not user.is_blocked
+    user.save()
+    if user.is_blocked:
+        active_sessions = Session.objects.filter(expire_date__gte=timezone.now())  
+        for session in active_sessions:
+            session_data = session.get_decoded()
+            if session_data.get('_auth_user_id') == str(user.id):
+                session.delete()
+    return redirect('all_users')
+@login_required
+def send_complaint(request):
+    if request.method == 'POST':
+        form = ComplaintForm(request.POST)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.user = request.user
+            complaint.type = 'user'
+            complaint.save()
+            return redirect('userdashboard')
+    else:
+        form = ComplaintForm()
+
+    return render(request, 'send_complaint.html', {'form': form})
+
+def reply_complaint(request, id):
+    if request.user.role != 'admin':
+        return redirect('Error')
+
+    complaint = get_object_or_404(Complaint, id=id)
+
+    if request.method == 'POST':
+        complaint.admin_reply = request.POST.get('reply')
+        complaint.status = 'reviewed'
+        complaint.save()
+
+    return redirect('admindashboard')
+@login_required
+def staff_send_complaint(request):
+
+    if request.user.role != 'staff':
+        return redirect('Error')
+
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        Complaint.objects.create(
+            user=request.user,
+            subject=subject,
+            message=message,
+            type='staff'
+        )
+
+        return redirect('staffdashboard')
+
+    return render(request, 'send_complaint.html')
+@login_required(login_url='/users/login')
+def donor_send_complaint(request):
+    if request.user.role != 'donor':
+        return redirect('Error')
+
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+
+        Complaint.objects.create(
+            user=request.user,
+            subject=subject,
+            message=message,
+            type='donor',   # IMPORTANT FIX
+            status='pending'
+        )
+
+        return redirect('donordashboard')
+
+    return render(request, 'send_complaint.html')
+@login_required(login_url='/users/login')
+def reply_complaint(request, id):
+    if request.user.role != 'admin':
+        return redirect('Error')
+
+    complaint = get_object_or_404(Complaint, id=id)
+
+    if request.method == 'POST':
+        reply = request.POST.get('reply')
+
+        complaint.admin_reply = reply
+        complaint.status = 'reviewed'
+        complaint.save()
+
+        return redirect('admindashboard')
+
+    return render(request, 'reply_complaint.html', {'complaint': complaint})

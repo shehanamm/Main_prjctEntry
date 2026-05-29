@@ -71,3 +71,57 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class DonorRating(models.Model):
+
+    donor = models.ForeignKey(
+       CustomUser,
+        on_delete=models.CASCADE,
+        related_name='received_ratings'
+    )
+
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        related_name='given_ratings'
+    )
+
+    booking = models.ForeignKey(
+        'Booking',
+        on_delete=models.CASCADE
+    )
+
+    rating = models.IntegerField()
+
+    review = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'booking')  # prevent multiple ratings
+
+    def __str__(self):
+        return f"{self.user} → {self.donor} ({self.rating})"
+
+
+class SystemRating(models.Model):
+
+    user = models.ForeignKey(
+            CustomUser,
+        on_delete=models.CASCADE
+    )
+
+    rating = models.IntegerField()
+
+    review = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.rating}"
+class Notification_donor(models.Model):
+        user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+        message = models.TextField()
+        created_at = models.DateTimeField(auto_now_add=True)
+        is_read = models.BooleanField(default=False)

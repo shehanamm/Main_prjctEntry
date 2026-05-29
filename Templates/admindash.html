@@ -15,7 +15,8 @@
 
 <div class="d-flex">
     <!-- Sidebar -->
-    <nav id="sidebar" class="bg-dark text-white vh-100 d-none d-md-block" style="min-width: 250px;">
+   <nav id="sidebar"
+     class="bg-dark text-white position-fixed top-0 start-0 vh-100 d-none d-md-block">
         <div class="sidebar-header p-4">
             <h4 class="mb-0">🐾 PetAdmin</h4>
         </div>
@@ -33,7 +34,9 @@
     </nav>
 
     <!-- Main Content -->
-    <div class="flex-fill bg-light">
+     <!-- MAIN -->
+<div class="flex-fill bg-light" style="margin-left:260px; min-height:100vh;">
+    
         <!-- Top Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom px-4">
             <div class="container-fluid">
@@ -229,6 +232,91 @@
         </table>
       </div>
     </div>
+    <!-- Complaints Section -->
+<div class="card shadow-sm border-0 mt-4">
+  <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+    <h5 class="mb-0 text-dark fw-bold">
+      User Complaints
+      <span class="badge bg-danger ms-2">{{ complaints|length }}</span>
+    </h5>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>User</th>
+          <th>Subject</th>
+          <th>Message</th>
+          <th>Status</th>
+          <th>Reply</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for c in complaints %}
+        <tr>
+
+          <!-- USER -->
+          <td>
+            <div class="fw-semibold">{{ c.user.username }}</div>
+          </td>
+
+          <!-- SUBJECT -->
+          <td>{{ c.subject }}</td>
+
+          <!-- MESSAGE -->
+          <td>
+            <small class="text-muted">
+              {{ c.message|truncatechars:50 }}
+            </small>
+          </td>
+
+          <!-- STATUS -->
+          <td>
+            {% if c.status == "pending" %}
+              <span class="badge bg-warning text-dark">Pending</span>
+            {% elif c.status == "reviewed" %}
+              <span class="badge bg-info">Reviewed</span>
+            {% else %}
+              <span class="badge bg-success">Resolved</span>
+            {% endif %}
+          </td>
+
+          <!-- REPLY SECTION -->
+          <td>
+            {% if c.admin_reply %}
+              <div class="alert alert-success p-2 mb-0">
+                {{ c.admin_reply }}
+              </div>
+            {% else %}
+              <form method="post" action="{% url 'reply_complaint' c.id %}">
+                {% csrf_token %}
+                <textarea name="reply" rows="2"
+                  class="form-control form-control-sm mb-2"
+                  placeholder="Write reply..."></textarea>
+
+                <button type="submit"
+                  class="btn btn-sm btn-primary w-100">
+                  Send Reply
+                </button>
+              </form>
+            {% endif %}
+          </td>
+
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">
+            <i class="bi bi-inbox d-block fs-3 mb-2"></i>
+            No complaints found
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
     </div> <!-- End Main Content -->
 </div>

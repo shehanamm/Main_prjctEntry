@@ -16,6 +16,7 @@ class CustomUser(AbstractUser):
     )
     role = models.CharField(
         max_length=10, choices=ROLE_CHOICES, default='user')
+    is_blocked=models.BooleanField(default=False)
     
 class DonorProfile(models.Model):
     name=models.CharField(max_length=50,blank=True)
@@ -51,3 +52,31 @@ class StaffProfile(models.Model):
      def __str__(self):
         return self.user.username
      
+class Complaint(models.Model):
+   TYPE_CHOICES = (
+        ('user', 'User Complaint'),
+        ('staff', 'Staff Complaint'),
+       ('donor', 'Donor Complaint'),
+
+    )
+
+   type = models.CharField(
+        max_length=10,
+        choices=TYPE_CHOICES,
+        default='user'
+    )
+   STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('reviewed', 'Reviewed'),
+        ('resolved', 'Resolved'),
+    )
+
+   user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+   subject = models.CharField(max_length=200)
+   message = models.TextField()
+   status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+   admin_reply = models.TextField(blank=True, null=True)
+   created_at = models.DateTimeField(auto_now_add=True)
+
+   def __str__(self):
+            return f"{self.user.username} - {self.subject}"

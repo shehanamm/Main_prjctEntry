@@ -1,7 +1,7 @@
 from django import forms
 from.models import CustomUser
 from django.contrib.auth.forms import UserCreationForm
-from.models import DonorProfile,UserProfile,StaffProfile
+from.models import DonorProfile,UserProfile,StaffProfile,Complaint
 class Reguser(UserCreationForm):
     class Meta:
         model=CustomUser
@@ -23,3 +23,7 @@ class StaffProfileForm(forms.ModelForm):
         widgets = {
             'staff_dob': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
+class ComplaintForm(forms.ModelForm):
+    class Meta:
+        model = Complaint
+        fields = ['subject', 'message']

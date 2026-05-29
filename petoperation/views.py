@@ -1,26 +1,27 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from.models import Category,Breed,Pet,Booking,ChatMessage,Announcement
+from.models import Category,Breed,Pet,Booking,ChatMessage,Announcement,DonorRating,SystemRating
+from. models import Notification_donor
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from.forms import Breed_form,Pet_addform,Pet_bookingform,ChatMessageForm,AnnouncementForm
+from.forms import Breed_form,Pet_addform,Pet_bookingform,ChatMessageForm,AnnouncementForm,DonorRatingForm,SystemRatingForm
 from accounts.utils import Error
 # admindashboard,dashboard,donordashboard,userdashboard
 # Create your views here.
 
 @login_required(login_url='/accounts/login')
-def add_newbreed(requset):
-  if not requset.user.is_superuser:
+def add_newbreed(request):
+  if not request.user.is_superuser:
         return redirect('Error')  
-  if requset.method=='POST':
-      form=Breed_form(requset.POST,requset.FILES)
+  if request.method=='POST':
+      form=Breed_form(request.POST,request.FILES)
       if form.is_valid():
         cat= form.save(commit=False)
         cat.save()
-        return redirect('admindashboard')
+      return redirect('admindashboard')
   else:
      form=Breed_form()
-     return render(requset,'addbreed.html',{'form':form})
+  return render(request,'addbreed.html',{'form':form})
   
 @login_required(login_url='/accounts/login')
 def add_pet_donate(request):
@@ -34,9 +35,9 @@ def add_pet_donate(request):
        pet=form.save(commit=False)
        pet.user=request.user
        pet.save()
-      if request.user.role == 'donor':
-            return redirect('donordashboard')
-      return redirect('userdashboard')
+      # if request.user.role == 'donor':
+       return redirect('donordashboard')
+      # return redirect('userdashboard')
     else:
          form=Pet_addform()
     return render(request,'addpet.html',{'form':form,'breeds':breeds})
@@ -58,11 +59,14 @@ def update_petdetails(request,id):
    return render(request,'editpet.html',{'form':form})
 @login_required(login_url='/accounts/login')     
 def delete_pet(request,id):
+   if request.user.role!='donor':
+    return redirect("Error")
    pet = Pet.objects.get(id=id,user=request.user)
    pet.delete()
    return redirect('allpets_view')
+#  to view specificpet
 @login_required(login_url='/accounts/login')
-def view_pet(request):
+def view_pet(request):                         
    pet = Pet.objects.filter(user=request.user)
    return render(request,'view_pet.html',{'pet':pet})
 
@@ -147,7 +151,6 @@ def chat_msg(request,booking_id):
 def start_chat(request, pet_id):
     pet = get_object_or_404(Pet, id=pet_id)
     if pet.user == request.user:
-        # Maybe send a message or just redirect home
         return redirect('home')
     booking,created = Booking.objects.get_or_create(
         pet=pet,
@@ -193,9 +196,95 @@ def post_announcement(request):
             announcement = form.save(commit=False)
             announcement.posted_by = request.user
             announcement.save()
-            print(announcement)
+            # print(announcement)
             return redirect('admindashboard') 
     else:
         form = AnnouncementForm()
        
     return render(request, 'announcement.html', {'form': form})    
+#  rating area
+
+@login_required
+def rate_donor(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id,
+        user=request.user
+    )
+
+    # only allow rating after adoption
+    if booking.status != 'approved':
+        messages.error(request, "You can rate only after adoption is approved.")
+        return redirect('userdashboard')
+
+    # prevent duplicate rating
+    if DonorRating.objects.filter(user=request.user, booking=booking).exists():
+        messages.warning(request, "You already rated this donor.")
+        return redirect('userdashboard')
+
+    if request.method == 'POST':
+        form = DonorRatingForm(request.POST)
+
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.user = request.user
+            rating.donor = booking.pet.user
+            rating.booking = booking
+            rating.save()
+
+            messages.success(request, "Thanks for rating the donor!")
+            return redirect('userdashboard')
+
+    else:
+        form = DonorRatingForm()
+
+    return render(request, 'rate_donor.html', {'form': form, 'booking': booking})
+
+
+
+
+@login_required(login_url='/accounts/login')
+def system_rating(request):
+
+    # prevent multiple ratings
+    if SystemRating.objects.filter(user=request.user).exists():
+        messages.warning(request, "You already rated the system.")
+        return redirect('userdashboard')
+
+    if request.method == "POST":
+        form = SystemRatingForm(request.POST)
+
+        if form.is_valid():
+            rating = form.save(commit=False)
+            rating.user = request.user
+            rating.save()
+
+            messages.success(request, "Thanks for rating our system!")
+            return redirect('userdashboard')
+
+    else:
+        form = SystemRatingForm()
+
+    return render(request, 'system_rating.html', {'form': form})
+
+@login_required(login_url='/accounts/login')
+def delete_pet_admin(request, id):
+    if not request.user.is_superuser:
+        return redirect("Error")
+
+    pet = get_object_or_404(Pet, id=id)
+
+    if request.method == "POST":
+        reason = request.POST.get("reason")
+
+        donor = pet.donor 
+        Notification_donor.objects.create(
+            user=donor,
+            message=f"Your pet '{pet.name}' was removed by admin. Reason: {reason}"
+        )
+
+        pet.delete()
+        return redirect('admindashboard')
+
+    return render(request, "confirm_delete.html", {"pet": pet})

@@ -20,6 +20,8 @@ urlpatterns = [
     path('deleteadmin/<int:id>',delete_pet_admin,name="delete_pet_admin"),
     path('updatepetadmin/<int:id>',updatepetadmin,name='updatepetadmin'),
     path('announcement',post_announcement,name='post_announcement'),
+    path('rate-donor/<int:booking_id>/', rate_donor, name='rate_donor'),
+    path('rate-system',system_rating,name="system_rating")
 
     
 ]

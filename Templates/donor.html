@@ -113,9 +113,75 @@
                         </div>
                         {% endfor %}
                     </div>
+
                 </div>
             </div>
+
         </div>
+     
+<!-- Complaint Section -->
+<div class="msg-card shadow-sm mt-4">
+    <div class="msg-card-header d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold">
+            <i class="bi bi-exclamation-circle-fill me-2 text-danger"></i>
+            My Complaints
+        </h6>
+        <a href="{% url 'send_complaint' %}" class="btn btn-sm btn-danger rounded-pill">
+            + New
+        </a>
+    </div>
+
+    <div class="msg-card-body">
+
+        {% for c in complaints %}
+        <div class="chat-list-item flex-column align-items-start">
+
+            <!-- Complaint Subject -->
+            <div class="fw-bold text-dark">
+                {{ c.subject }}
+            </div>
+
+            <!-- Message -->
+            <div class="text-muted small">
+                {{ c.message }}
+            </div>
+
+            <!-- Status -->
+            <div class="mt-1">
+                {% if c.status == "pending" %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                {% elif c.status == "reviewed" %}
+                    <span class="badge bg-info">Reviewed</span>
+                {% else %}
+                    <span class="badge bg-success">Resolved</span>
+                {% endif %}
+            </div>
+
+            <!-- Admin Reply -->
+            {% if c.admin_reply %}
+            <div class="alert alert-success mt-2 p-2 small mb-0">
+                <strong>Admin Reply:</strong> {{ c.admin_reply }}
+            </div>
+            {% else %}
+            <div class="text-muted small mt-1">
+                No reply yet
+            </div>
+            {% endif %}
+
+        </div>
+        {% empty %}
+        <div class="empty-msg-state">
+            <i class="bi bi-file-earmark-text mb-2"></i>
+            <p>No complaints yet</p>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+ 
+    </div>
+
+</section>
     </main>
 
 </body>
